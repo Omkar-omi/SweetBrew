@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+## This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), [Tailwind Css](https://github.com/tailwindlabs/tailwindcss) , [DaisyUI](https://github.com/saadeghi/daisyui) and Firebase
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), [Tailwind Css](https://github.com/tailwindlabs/tailwindcss) , [DaisyUI](https://github.com/saadeghi/daisyui) and Firebase
+
 
 ## Dashbord UI
 ![dashbord](https://user-images.githubusercontent.com/113718239/198253322-e321432f-e80a-4f2a-8ba8-24ea4d1a10f2.png)
