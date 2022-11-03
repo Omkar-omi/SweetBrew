@@ -3,7 +3,17 @@
 
 
 ## Dashbord UI
-![dashbord](https://user-images.githubusercontent.com/113718239/198253322-e321432f-e80a-4f2a-8ba8-24ea4d1a10f2.png)
+![homepage(bigscreen)](https://user-images.githubusercontent.com/113718239/199750615-c33aad0f-9dcc-488a-8823-6513ce31b184.png)
+
+## Dashbord UI(small Screen)
+![homepage(smallscreen)](https://user-images.githubusercontent.com/113718239/199750699-96c7707c-b74c-454b-aabd-1988c21794ad.png)
+
+## Edit profile
+![Screenshot 2022-11-03 at 8 06 25 PM](https://user-images.githubusercontent.com/113718239/199750879-5f3f6d74-6dfb-461e-8eca-4f42fbe187eb.png)
+
+## Edit profile(small Screen)
+![Screenshot 2022-11-03 at 8 06 15 PM](https://user-images.githubusercontent.com/113718239/199750896-97c6cdbf-b848-4afd-8f3c-bca0617d90bd.png)
+
 
 ## Login Page
 ![login](https://user-images.githubusercontent.com/113718239/198250410-cc9441b1-bfd3-4b61-9924-94f305a3419c.png)
