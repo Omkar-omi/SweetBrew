@@ -1,10 +1,9 @@
-import { arrayUnion, collection, doc, increment, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, doc, increment, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { UserAuth } from "../context/AuthContext";
 import db from '../firebase'
 import coffee from '../images/Coffee.jpg'
 const ProductList = () => {
-  const { user } = UserAuth();
 
   useEffect(() => {
     getData()
@@ -18,7 +17,6 @@ const ProductList = () => {
         id: doc.id
       })))
     })
-
   }
   const truncate = (input) => input?.length > 75 ? `${input.substring(0, 75)}...` : input;
 
@@ -27,15 +25,21 @@ const ProductList = () => {
   const [no, setNo] = useState(0);
 
   const handelAddToCart = async (e) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     if (qty > 0) {
       const docRef = doc(db, "users", user.uid)
+      setDoc(docRef, {
+        cart: {
+          [`${no}`]: {
+            srno: no,
+            quantity: qty,
+            product: e.target.value,
+            price: price * qty
+          },
+        }
+      }, { merge: true })
       updateDoc(docRef, {
-        cart: arrayUnion({
-          srno: no,
-          quantity: qty,
-          product: e.target.value,
-          price: price * qty
-        }),
         cartvalue: increment(qty * price),
       })
       setQty(0)
@@ -44,7 +48,7 @@ const ProductList = () => {
         input.value = ""
       })
     }
-    // to-do
+    // TO-DO(Alert timeout feature)
     // } else {
     //   setAlert(true)
     //   setTimeout(() => {
@@ -55,9 +59,9 @@ const ProductList = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-2 xl:grid-cols-3 grid-cols-1 mt-10 justify-items-center ">
+    <div className="grid lg:grid-cols-2 xl:grid-cols-3 grid-cols-1 mt-10 justify-items-center">
       {data ? data.map(product =>
-        <div className="card w-80 lg:w-80 bg-neutral shadow-xl mb-5" key={product.id}>
+        <div className="card w-80 lg:w-80 bg-neutral shadow-xl mb-5 mx-10" key={product.id}>
           <figure><img src={coffee} alt="coffee" className="w-80 h-52" /></figure>
           <div className="card-body">
             <h2 className="card-title text-white  ">{product.name}</h2>

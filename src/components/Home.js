@@ -2,12 +2,8 @@ import CurrentOrder from "./Currentorder";
 import NavBar from "./NavBar"
 import ProductFilter from "./ProductFilter";
 import ProductList from "./ProductList";
-import { UserAuth } from "../context/AuthContext";
 
 const Home = () => {
-  const { user } = UserAuth();
-
-
   return (
     <div>
       <NavBar />
@@ -16,7 +12,7 @@ const Home = () => {
           <ProductFilter />
           <ProductList />
         </div>
-        <CurrentOrder name={user.displayName} />
+        <CurrentOrder />
       </div>
     </div>
   );

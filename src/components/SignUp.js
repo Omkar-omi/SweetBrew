@@ -1,6 +1,6 @@
 import { updateProfile } from "firebase/auth";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
@@ -21,9 +21,12 @@ const SignUp = () => {
 
 
   const handelUsersetup = async () => {
-    await setDoc(doc(db, "users", user.uid), {
-      name: user.displayName,
-      cart: []
+    await setDoc(doc(db, "users", localStorage.getItem("id")), {
+      name: localStorage.getItem("name"),
+      cart: {},
+      cartvalue: 0,
+      address: "",
+      email: localStorage.getItem("email")
     });
   }
 
@@ -40,14 +43,16 @@ const SignUp = () => {
         await createUser(email, password)
         let dispName = document.getElementById("name").value;
         dispName = dispName.charAt(0).toUpperCase() + dispName.slice(1);
-
+        localStorage.setItem("name", user.displayName);
+        localStorage.setItem("id", user.uid);
+        localStorage.setItem("email", user.email);
         await updateProfile(auth.currentUser, {
           displayName: dispName
         })
-        handelUsersetup()
-
         navigate("/")
         setIsPending(false)
+        handelUsersetup()
+
       } catch (e) {
         setError("Email or Password dosen't match")
         console.log(e.message);
@@ -58,19 +63,20 @@ const SignUp = () => {
   }
   return (
     <div className="flex items-center justify-center mt-32">
-      <form className="flex flex-col justify-center  border-solid border-2 py-10 px-10 rounded-lg " onSubmit={handelSignup} >
+      <form className="flex flex-col justify-center  md:border-solid md:border-2 py-10 md:px-10 md:rounded-lg " onSubmit={handelSignup} >
         <h2 className="text-2xl flex justify-center mb-10 text-white">SignUp</h2>
         <h2 className="text-red-700 text-center text-2xl mb-5">{error}</h2>
         <label className="text-white" >Enter Name :</label>
-        <input className="border-solid border-2 rounded-lg text-black sm:w-96" type="text" id="name" required value={name} onChange={(e) => setName(e.target.value)} />
+        <input className="border-solid border-2 rounded-lg text-black w-60 md:w-96 " type="text" id="name" required value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
         <label className="text-white">Enter Email :</label>
-        <input className="border-solid border-2 rounded-lg text-black sm:w-96" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input className="border-solid border-2 rounded-lg text-black w-60 md:w-96 " type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <label className="mt-2 text-white">Password:</label>
-        <input className="border-solid border-2 rounded-lg  text-black sm:w-96" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="border-solid border-2 rounded-lg  text-black w-60 md:w-96 " type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
         <label className="mt-2 text-white">Confirm Password:</label>
-        <input className="border-solid border-2 rounded-lg  text-black sm:w-96" type="password" required value={cnfpassword} onChange={(e) => setcnfPassword(e.target.value)} />
+        <input className="border-solid border-2 rounded-lg  text-black w-60 md:w-96 " type="password" required value={cnfpassword} onChange={(e) => setcnfPassword(e.target.value)} />
         {!isPending && <button className="btn btn-primary mt-5 mb-5">Sign in</button>}
         {isPending && <button className="btn loading mt-5 mb-5 text-white btn-disabled" >Signing in...</button>}
+        <Link className="text-center underline" to={"/login"}>Have an account?<br />Click here to Login</Link>
       </form>
     </div>
   );
