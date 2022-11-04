@@ -3,10 +3,12 @@
 
 
 ## Dashbord UI
-![homepage(bigscreen)](https://user-images.githubusercontent.com/113718239/199750615-c33aad0f-9dcc-488a-8823-6513ce31b184.png)
+![bigscreen dashbord](https://user-images.githubusercontent.com/113718239/200029059-7e697ecf-1dc5-48e7-8583-c24b23f1814c.png)
+
 
 ## Dashbord UI(small Screen)
-![homepage(smallscreen)](https://user-images.githubusercontent.com/113718239/199750699-96c7707c-b74c-454b-aabd-1988c21794ad.png)
+![small screen dashbord](https://user-images.githubusercontent.com/113718239/200028995-a11bdee6-bb29-43d3-b15f-5aa0aaad355e.png)
+
 
 ## Edit profile
 ![Screenshot 2022-11-03 at 8 06 25 PM](https://user-images.githubusercontent.com/113718239/199750879-5f3f6d74-6dfb-461e-8eca-4f42fbe187eb.png)
