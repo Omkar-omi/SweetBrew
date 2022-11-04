@@ -135,7 +135,7 @@ const Profile = () => {
           <div className="flex gap-3">
             <textarea className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 " type="email" required onChange={(e) => setAddress(e.target.value)} />
           </div>
-          <label htmlFor="addAddress-modal" className="btn my-3" onClick={handleAddAddress}>Save</label>
+          <label htmlFor="addAddress-modal" className="btn my-3 btn-primary" onClick={handleAddAddress}>Save</label>
         </div>
       </div>
       {/* Name modals */}
@@ -146,7 +146,7 @@ const Profile = () => {
           <h3 className="font-bold text-lg">Edit Name</h3>
           <label className="text-white mb-2">Name :</label>
           <input className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3" type="text" value={editname} required onChange={(e) => setEditName(e.target.value)} />
-          <label htmlFor="name-modal" className="btn" onClick={handelEditName}>Save</label>
+          <label htmlFor="name-modal" className="btn btn-primary" onClick={handelEditName}>Save</label>
         </div>
       </div>
       {/* address modals */}
@@ -157,7 +157,7 @@ const Profile = () => {
           <h3 className="font-bold text-lg">Edit Address</h3>
           <label className="text-white mb-2">Address :</label>
           <input className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3" type="text" value={editaddress} required onChange={(e) => setEditAddress(e.target.value)} />
-          <label htmlFor="address-modal" className="btn" onClick={handelEditAddress}>Save</label>
+          <label htmlFor="address-modal" className="btn btn-primary" onClick={handelEditAddress}>Save</label>
         </div>
       </div>
       {/* Pass change modal */}
@@ -172,7 +172,7 @@ const Profile = () => {
           <input className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3 " value={oldpass} type="password" required onChange={(e) => setOldPass(e.target.value)} /><br />
           <label className="text-white mb-2">New Password :</label>
           <input className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3 " value={newpass} type="password" required onChange={(e) => setNewPass(e.target.value)} />
-          {!isPending && <button htmlFor="pass-modal" className="btn w-64 sm:w-[450px] " onClick={handelUpdatePassword}>Update Password</button>}
+          {!isPending && <button htmlFor="pass-modal" className="btn w-64 sm:w-[450px] btn-primary" onClick={handelUpdatePassword}>Update Password</button>}
           {isPending && <button className="btn loading mt-5 mb-5 text-white btn-disabled w-64 md:w-[516px]" >Updating...</button>}
         </div>
       </div>

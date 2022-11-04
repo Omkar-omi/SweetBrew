@@ -1,7 +1,6 @@
 import CurrentOrder from "./Currentorder";
 import NavBar from "./NavBar"
 import ProductFilter from "./ProductFilter";
-import ProductList from "./ProductList";
 
 const Home = () => {
   return (
@@ -10,7 +9,6 @@ const Home = () => {
       <div className="flex flex-row ">
         <div className="grow">
           <ProductFilter />
-          <ProductList />
         </div>
         <CurrentOrder />
       </div>

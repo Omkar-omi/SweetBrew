@@ -26,5 +26,5 @@
 2. Adding Show cart (on small screen) feature. &#9989;
 3. Adding Search feature.
 4. Adding Edit profile feature. &#9989;
-5. Showing items based on categories feature eg: coffee, deserts, snacks..etc
+5. Showing items based on categories feature eg: coffee, deserts, snacks..etc &#9989;
 6. Removing items form cart &#9989;

@@ -14,7 +14,6 @@ const NavBar = () => {
 
   useEffect(() => {
     getData()
-    console.log(data);
   }, [])
 
   const [data, setData] = useState();

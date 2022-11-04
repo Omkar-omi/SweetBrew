@@ -113,7 +113,7 @@ const CurrentOrder = () => {
             <div className="flex flex-row justify-between my-5">
               <div className='font-medium text-xl'>Total:</div>
               {data ? data.map(product =>
-                <div key={1}>{`₹ ${product.cartvalue + (product.cartvalue / 100) * 18} `}</div>
+                <div key={1}>₹ {Number(product.cartvalue + (product.cartvalue / 100) * 18).toFixed(2)}</div>
               ) : null
               }
             </div>
