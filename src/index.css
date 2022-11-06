@@ -22,4 +22,18 @@
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: #DC944C;
   }
+
+  .radiocustom {
+    visibility: hidden;
+  }
+
+  .labelcustom {
+    cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid transparent;
+  }
+
+  .radiocustom:checked+.labelcustom {
+    border-color: white;
+  }
 }

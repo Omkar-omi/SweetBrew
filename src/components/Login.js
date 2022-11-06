@@ -26,7 +26,6 @@ const Login = () => {
       await signin(email, password)
       const auth = getAuth();
       const user = auth.currentUser;
-      console.log(user);
       localStorage.setItem("name", user.displayName);
       localStorage.setItem("id", user.uid);
       localStorage.setItem("email", user.email);

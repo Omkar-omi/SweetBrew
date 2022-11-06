@@ -3,10 +3,14 @@ import { useEffect, useState } from 'react';
 import coffee from '../images/Coffee.jpg'
 import db from '../firebase'
 import { getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const CurrentOrder = () => {
   const auth = getAuth();
   const user = auth.currentUser;
+  const navigate = useNavigate();
+  const [isPending, setIsPending] = useState(false)
+
 
   useEffect(() => {
     getData()
@@ -28,11 +32,18 @@ const CurrentOrder = () => {
     const docRef = doc(db, "users", user.uid);
     const srno = e.target.value
     const price = e.target.getAttribute("data-price")
-    console.log(price);
+
     await updateDoc(docRef, {
       [`cart.${srno}`]: deleteField(),
       cartvalue: increment(-price)
     })
+  }
+  const handelCheckout = () => {
+    setIsPending(true)
+    setTimeout(() => {
+      navigate("/checkout")
+      setIsPending(false)
+    }, 500)
   }
 
   if (data && data[0].hasOwnProperty('cart') && Object.keys(data[0].cart).length == 0) {
@@ -118,7 +129,8 @@ const CurrentOrder = () => {
               }
             </div>
             <div className="flex">
-              <button className="btn btn-primary grow">Check Out</button>
+              {isPending && <button className="content-center btn btn-primary grow loading">Checking Out...</button>}
+              {!isPending && <button className="content-center btn btn-primary grow" onClick={handelCheckout}> Check Out</button>}
             </div>
           </div>
         </div>

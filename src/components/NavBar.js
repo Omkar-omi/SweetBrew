@@ -11,6 +11,7 @@ const NavBar = () => {
 
   const auth = getAuth();
   const user = auth.currentUser;
+  const [isPending, setIsPending] = useState(false)
 
   useEffect(() => {
     getData()
@@ -49,6 +50,14 @@ const NavBar = () => {
       console.log(e.message);
     }
   }
+
+  const handelCheckout = () => {
+    setIsPending(true)
+    setTimeout(() => {
+      navigate("/checkout")
+      setIsPending(false)
+    }, 500)
+  }
   return (
     <div className="navbar fixed z-10 bg-base-100 gap-3 border-solid border-b-2 border-primary">
       <div className="flex-1">
@@ -84,7 +93,8 @@ const NavBar = () => {
                   </div>) : null}
                 {!Object.keys(product.cart).length == 0 && <hr />}
                 <div className="card-actions">
-                  {!Object.keys(product.cart).length == 0 && <button className="btn btn-primary btn-block ">Check Out</button>}
+                  {isPending && <button className="content-center btn btn-primary grow loading">Checking Out...</button>}
+                  {!isPending && !Object.keys(product.cart).length == 0 && <button className="btn btn-primary btn-block" onClick={handelCheckout}>Check Out</button>}
                 </div>
               </div>
             </div>

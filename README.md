@@ -24,7 +24,7 @@
 ![signup](https://user-images.githubusercontent.com/113718239/198250470-545339df-d139-41af-861e-c0fdac1f07e7.png)
 
 ## Future feature updates
-1. Adding Checkout feature.
+1. Adding Checkout feature. &#9989;
 2. Adding Show cart (on small screen) feature. &#9989;
 3. Adding Search feature. &#9989;
 4. Adding Edit profile feature. &#9989;
