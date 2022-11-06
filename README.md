@@ -16,6 +16,9 @@
 ## Edit profile(small Screen)
 ![Screenshot 2022-11-03 at 8 06 15 PM](https://user-images.githubusercontent.com/113718239/199750896-97c6cdbf-b848-4afd-8f3c-bca0617d90bd.png)
 
+## CheckOut page
+![checkout](https://user-images.githubusercontent.com/113718239/200158299-f112843b-6168-4421-94e5-54b7be1353a1.png)
+
 
 ## Login Page
 ![login](https://user-images.githubusercontent.com/113718239/198250410-cc9441b1-bfd3-4b61-9924-94f305a3419c.png)
