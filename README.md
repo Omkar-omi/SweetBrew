@@ -19,6 +19,13 @@
 ## CheckOut page
 ![checkout](https://user-images.githubusercontent.com/113718239/200158299-f112843b-6168-4421-94e5-54b7be1353a1.png)
 
+## Your Past Orders menu (Big Screen)
+![your orders big screen](https://user-images.githubusercontent.com/113718239/200382630-9432ced1-4a49-4a9a-ac96-be1aa345ddf7.png)
+
+
+## Your Past Orders menu (Small Screen)
+![your orders small screen](https://user-images.githubusercontent.com/113718239/200382653-b1f7320a-8044-42e8-97cc-679ac8732e0d.png)
+
 
 ## Login Page
 ![login](https://user-images.githubusercontent.com/113718239/198250410-cc9441b1-bfd3-4b61-9924-94f305a3419c.png)
