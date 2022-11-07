@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaHome } from "react-icons/fa";
-import { addDoc, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import coffee from '../images/Coffee.jpg'
 import db from '../firebase'
 import { BsInfoCircle, BsCreditCard2Back } from "react-icons/bs";
 import { CgGoogle } from "react-icons/cg";
+import { getAuth } from "firebase/auth";
 
 const Checkout = () => {
   const [data, setData] = useState();
@@ -22,6 +23,8 @@ const Checkout = () => {
   const [cart, setCart] = useState();
   const [cartvalue, setCartvalue] = useState();
   const navigate = useNavigate();
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   useEffect(() => {
     getData()
@@ -47,8 +50,9 @@ const Checkout = () => {
   const handleAddAddress = () => {
     const docRef = doc(db, "users", localStorage.getItem("id"))
     setDoc(docRef, {
-      address: address
+      address: newaddress
     }, { merge: true })
+    setAddress(newaddress)
   }
   const handelCheckout = async () => {
     setIsPending(true)
@@ -56,10 +60,13 @@ const Checkout = () => {
       const docRef = await addDoc(collection(db, "orders"), {
         name: localStorage.getItem("name"),
         address: address,
+        area: area || "",
+        pincode: pincode || "",
         cart: cart,
         email: localStorage.getItem("email"),
         paymentmethod: paymentmethod,
         deliverymethod: delivery,
+        time: serverTimestamp()
       });
       if (extracharges == true) {
         updateDoc(doc(db, "orders", docRef.id), {
@@ -72,8 +79,22 @@ const Checkout = () => {
       }
       await updateDoc(doc(db, "users", localStorage.getItem("id")), {
         cart: {},
-        cartvalue: 0
+        cartvalue: 0,
       })
+      const timestamp = new Date()
+      const time = timestamp.toLocaleTimeString()
+      const date = timestamp.toLocaleDateString()
+
+      setDoc(doc(db, "users", user.uid), {
+        yourorders: {
+          [docRef.id]: {
+            cart: cart,
+            timestamp: `${date} at ${time} `,
+            orderid: docRef.id
+          }
+        }
+      }, { merge: true })
+
       setTimeout(() => {
         navigate("/")
       }, 1000)
@@ -175,10 +196,10 @@ const Checkout = () => {
             <div className="text-gray-200 my-2">Delivery Address</div>
             {address && <input type="text" className="p-2 rounded-lg border-solid border-4 border-green-400" value={address} readOnly={true} />}
             {!address && <input type="text" className="p-2 rounded-lg" value={newaddress} onChange={(e) => setNewAddress(e.target.value)} />}
-            {!address && <label className="btn btn-primary md:ml-5 mt-4" htmlFor="addAddress-modal" onClick={handleAddAddress}>Add Address&nbsp;<FaHome /></label>}
+            {!address && <label className="btn btn-primary  mt-4" htmlFor="addAddress-modal" onClick={handleAddAddress}>Add Address&nbsp;<FaHome /></label>}
             <div className="flex flex-col  md:flex-row justify-between mt-4 gap-2">
               <input type="text" className="p-2 rounded-lg" placeholder="Area (Optional)" value={area} onChange={(e) => setArea(e.target.value)} />
-              <input type="text" className="p-2 rounded-lg mt-4 md:mt-0" placeholder="Pincode (Optional)" value={pincode} onChange={(e) => setPincode(e.target.value)} />
+              <input type="number" className="p-2 rounded-lg mt-4 md:mt-0" placeholder="Pincode (Optional)" value={pincode} onChange={(e) => setPincode(e.target.value)} />
             </div>
           </div>
           <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5 mt-4 text-gray-200">

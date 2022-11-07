@@ -41,17 +41,19 @@ const SignUp = () => {
     else {
       try {
         await createUser(email, password)
-        let dispName = document.getElementById("name").value;
-        dispName = dispName.charAt(0).toUpperCase() + dispName.slice(1);
-        localStorage.setItem("name", user.displayName);
-        localStorage.setItem("id", user.uid);
-        localStorage.setItem("email", user.email);
+        let dispName = name
+        dispName = name.charAt(0).toUpperCase() + dispName.slice(1);
+        setTimeout(() => {
+          localStorage.setItem("name", dispName);
+          localStorage.setItem("id", user.uid);
+          localStorage.setItem("email", email);
+          handelUsersetup()
+        }, 1000)
         await updateProfile(auth.currentUser, {
           displayName: dispName
         })
         navigate("/")
         setIsPending(false)
-        handelUsersetup()
 
       } catch (e) {
         setError("Email or Password dosen't match")

@@ -52,7 +52,7 @@ const ProductFilter = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     if (qty > 0) {
-      const docRef = doc(db, "users", user.uid)
+      const docRef = doc(db, "users", localStorage.getItem("id"))
       setDoc(docRef, {
         cart: {
           [`${no}`]: {

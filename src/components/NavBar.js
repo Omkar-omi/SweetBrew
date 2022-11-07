@@ -114,9 +114,8 @@ const NavBar = () => {
             <li>
               <Link className="text-center mt-2" to={"/profile"}>Profile</Link>
             </li>
-            {/* TO-DO */}
-            {/* <li><a>Favourite</a></li> */}
-            <li><a>Settings</a></li>
+            <li><Link className="text-center mt-2" to={"/favourite"}>Favourite</Link></li>
+            <li><Link className="text-center mt-2" to={"/yourorders"}>Your Orders</Link></li>
             <li onClick={handelLogout}><a>Logout</a></li>
           </ul>
         </div>

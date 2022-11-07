@@ -6,6 +6,7 @@ import Home from './Home';
 import SignUp from './SignUp';
 import Profile from './Profile';
 import Checkout from './Checkout';
+import YourOrders from './YourOrders';
 function App() {
   return (
     <AuthContextProvider>
@@ -17,6 +18,7 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/checkout' element={<Checkout />} />
+            <Route path='/yourorders' element={<YourOrders />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
