@@ -3,12 +3,11 @@
 
 
 ## Dashbord UI
-![bigscreen dashbord](https://user-images.githubusercontent.com/113718239/200029059-7e697ecf-1dc5-48e7-8583-c24b23f1814c.png)
+![home page](https://user-images.githubusercontent.com/113718239/200560159-ccf1f2cd-967d-40ec-9a2e-0880f162d2b5.png)
 
 
 ## Dashbord UI(small Screen)
-![small screen dashbord](https://user-images.githubusercontent.com/113718239/200028995-a11bdee6-bb29-43d3-b15f-5aa0aaad355e.png)
-
+![homepage small screen](https://user-images.githubusercontent.com/113718239/200560121-6d6570dc-bf0b-47be-b15f-f1938b877470.png)
 
 ## Edit profile
 ![Screenshot 2022-11-03 at 8 06 25 PM](https://user-images.githubusercontent.com/113718239/199750879-5f3f6d74-6dfb-461e-8eca-4f42fbe187eb.png)
@@ -22,6 +21,8 @@
 ## Your Past Orders menu (Big Screen)
 ![your orders big screen](https://user-images.githubusercontent.com/113718239/200382630-9432ced1-4a49-4a9a-ac96-be1aa345ddf7.png)
 
+## Your Favourite items menu
+![favourite items page](https://user-images.githubusercontent.com/113718239/200560263-0cb15df9-5d10-4e2c-84c9-a22da6d8ace0.png)
 
 ## Your Past Orders menu (Small Screen)
 ![your orders small screen](https://user-images.githubusercontent.com/113718239/200382653-b1f7320a-8044-42e8-97cc-679ac8732e0d.png)
@@ -42,3 +43,4 @@
 6. Removing items form cart. &#9989;
 7. Your Past orders menue. &#9989;
 8. Rating the orders and wrinting review feature. &#9989;
+9. Add items to favourite list. &#9989;
