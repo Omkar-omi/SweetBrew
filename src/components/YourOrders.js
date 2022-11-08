@@ -1,9 +1,9 @@
-import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { collection, doc, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import db from '../firebase'
-import coffee from '../images/Coffee.jpg'
+
 import { BsChevronRight } from "react-icons/bs";
 import Star from "./Star";
 
@@ -12,15 +12,13 @@ const YourOrders = () => {
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(null);
   const [review, setReview] = useState("");
-  const [reviewdata, setReviewData] = useState("");
   const [id, setId] = useState("");
-  const [index, setIndex] = useState("");
   const [data, setData] = useState();
 
 
   useEffect(() => {
     getData()
-  }, [data])
+  }, [])
 
   const handelReview = async () => {
     updateDoc(doc(db, "orders", id), {
@@ -38,11 +36,6 @@ const YourOrders = () => {
     }, { merge: true })
   }
 
-  const handelRating = () => {
-
-  }
-
-
   const getData = async () => {
     const docRef = query(collection(db, "users"), where("name", "==", localStorage.getItem("name")));
     onSnapshot(docRef, (snapshot) => {
@@ -56,11 +49,9 @@ const YourOrders = () => {
   return (
     <>
       <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
-        <Link to={"/"} className=" "  ><FaArrowLeft className=" w-5 h-5" /> </Link>
+        <Link to={"/"}><FaArrowLeft className=" w-5 h-5" /> </Link>
         <div className="ml-5 text-xl  text-white">Order History</div>
       </nav>
-
-
       <div className="flex items-center flex-col">
         {data ? Object.values(data[0].yourorders).map((product, index) =>
           <div className="flex flex-col mb-5 w-72 md:w-[600px] border-solid border-2 p-3 rounded-lg" key={index}>
@@ -77,10 +68,7 @@ const YourOrders = () => {
                 </div>
                 <hr />
               </div>) : null}
-            {(product.review == "" || product.rating == "") && <div className="flex items-center justify-end mt-2" id="index" value={index} onMouseEnter={(e) => {
-              setId(product.orderid)
-              setIndex(index)
-            }}>
+            {(product.review == "" || product.rating == "") && <div className="flex items-center justify-end mt-2" value={index} onMouseEnter={() => setId(product.orderid)}>
               <label htmlFor="rating-modal" className="cursor-pointer md:text-lg" value={product.orderid} >Rate </label>
               <div><BsChevronRight /></div>
             </div>}

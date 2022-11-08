@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaHome } from "react-icons/fa";
-import { addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import coffee from '../images/Coffee.jpg'
 import db from '../firebase'

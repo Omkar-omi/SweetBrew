@@ -105,7 +105,7 @@ const Profile = () => {
           <h2 className="text-2xl flex justify-center mb-10 text-white">Profile</h2>
           <label className="text-white mb-2" >Name :</label>
           <div className="flex gap-3">
-            <input className="p-2 rounded-lg text-black w-64 md:w-[450px]  " type="text" id="name" required value={name} readOnly={true} autoComplete="off" />
+            <input className="p-2 rounded-lg text-black w-64 md:w-[450px]  " type="text" required value={name} readOnly={true} autoComplete="off" />
             <label className="btn bg-neutral" htmlFor="name-modal" ><MdModeEdit className="w-5 h-5" /></label>
           </div>
           <label className="text-white mb-2">Email :</label>

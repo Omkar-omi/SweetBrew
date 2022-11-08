@@ -36,8 +36,4 @@
   .radiocustom:checked+.labelcustom {
     border-color: white;
   }
-
-  .ratingcustom {
-    display: none;
-  }
 }

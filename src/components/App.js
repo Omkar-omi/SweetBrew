@@ -7,6 +7,7 @@ import SignUp from './SignUp';
 import Profile from './Profile';
 import Checkout from './Checkout';
 import YourOrders from './YourOrders';
+import Favourite from './Favourite';
 function App() {
   return (
     <AuthContextProvider>
@@ -18,6 +19,7 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/checkout' element={<Checkout />} />
+            <Route path='/favourite' element={<Favourite />} />
             <Route path='/yourorders' element={<YourOrders />} />
             <Route path='*' element={<NotFound />} />
           </Routes>

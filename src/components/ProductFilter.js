@@ -1,8 +1,10 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDocs, increment, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDocs, increment, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import db from '../firebase'
 import coffee from '../images/Coffee.jpg'
+import { AiFillHeart } from "react-icons/ai";
+
 
 const ProductFilter = () => {
   const [data, setData] = useState();
@@ -10,6 +12,8 @@ const ProductFilter = () => {
   const [qty, setQty] = useState();
   const [price, setPrice] = useState();
   const [no, setNo] = useState(0);
+  const [favouriteName, setfavouriteName] = useState();
+  const [favouritePrice, setfavouritePrice] = useState();
 
   useEffect(() => {
     getAllData()
@@ -73,6 +77,17 @@ const ProductFilter = () => {
       })
     }
   }
+
+  const handelFavourite = async () => {
+    const docRef = doc(db, "users", localStorage.getItem("id"))
+    setDoc(docRef, {
+      favourite: arrayUnion({
+        product: favouriteName,
+        price: favouritePrice
+      })
+    }, { merge: true })
+    setNo(no + 1)
+  }
   if (data == "") {
     return (
       <>
@@ -134,7 +149,13 @@ const ProductFilter = () => {
         </div>
         <div className="grid 2xl:grid-cols-6 lg:grid-cols-2 xl:grid-cols-3 grid-cols-1 mt-10 justify-items-center">
           {data ? data.map(product =>
-            <div className="card w-80 lg:w-80 bg-neutral shadow-xl mb-5 mx-10" key={product.id}>
+            <div className="relative card w-80 lg:w-80 bg-neutral shadow-xl mb-5 mx-10" key={product.id}>
+              <div className="absolute top-2 right-2 tooltip tooltip-left rounded-lg" data-tip="Add to Favourite" onMouseEnter={() => {
+                setfavouriteName(product.name)
+                setfavouritePrice(product.price)
+              }}>
+                <AiFillHeart className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125" onClick={handelFavourite} />
+              </div>
               <figure><img src={coffee} alt="coffee" className="w-80 h-52" /></figure>
               <div className="card-body">
                 <h2 className="card-title text-white h-10 ">{product.name}</h2>
@@ -144,7 +165,7 @@ const ProductFilter = () => {
                   <input type="number" min={0} max={100} id="input" placeholder="Enter Quantity" className=" grow rounded-lg pl-3 py-1 icon" required onChange={(e) => {
                     setQty(e.target.value)
                     setPrice(product.price)
-                  }} />
+                  }} autoComplete="off" />
                 </div>
                 <button className="btn btn-primary" value={product.name} onClick={handelAddToCart}>Add to cart</button>
               </div>

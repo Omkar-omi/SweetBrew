@@ -69,7 +69,7 @@ const SignUp = () => {
         <h2 className="text-2xl flex justify-center mb-10 text-white">SignUp</h2>
         <h2 className="text-red-700 text-center text-2xl mb-5">{error}</h2>
         <label className="text-white" >Enter Name :</label>
-        <input className="border-solid border-2 rounded-lg text-black w-60 md:w-96 " type="text" id="name" required value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
+        <input className="border-solid border-2 rounded-lg text-black w-60 md:w-96 " type="text" required value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
         <label className="text-white">Enter Email :</label>
         <input className="border-solid border-2 rounded-lg text-black w-60 md:w-96 " type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <label className="mt-2 text-white">Password:</label>
