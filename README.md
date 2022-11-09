@@ -21,12 +21,11 @@
 ## Your Past Orders menu (Big Screen)
 ![your orders big screen](https://user-images.githubusercontent.com/113718239/200382630-9432ced1-4a49-4a9a-ac96-be1aa345ddf7.png)
 
-## Your Favourite items menu
-![favourite items page](https://user-images.githubusercontent.com/113718239/200560263-0cb15df9-5d10-4e2c-84c9-a22da6d8ace0.png)
-
 ## Your Past Orders menu (Small Screen)
 ![your orders small screen](https://user-images.githubusercontent.com/113718239/200382653-b1f7320a-8044-42e8-97cc-679ac8732e0d.png)
 
+## Your Favourite items menu
+![FAVITEMS UI](https://user-images.githubusercontent.com/113718239/200842206-e0632945-ed9e-46e1-8eb3-bc5add20b282.png)
 
 ## Login Page
 ![login](https://user-images.githubusercontent.com/113718239/198250410-cc9441b1-bfd3-4b61-9924-94f305a3419c.png)
