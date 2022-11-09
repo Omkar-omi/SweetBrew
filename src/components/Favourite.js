@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, deleteField, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -21,30 +21,57 @@ const Favourite = () => {
       })))
     })
   }
-  return (
-    <>
-      <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
-        <Link to={"/"}><FaArrowLeft className=" w-5 h-5" /></Link>
-        <div className="ml-5 text-xl  text-white">Your Favourite</div>
-      </nav>
-      <ol className="flex items-center flex-col  list-decimal marker:text-primary marker:text-xl">
-        {data ? Object.values(data[0].favourite).map((product, index) =>
-          <li key={index}>
-            <div className="flex flex-col mb-5 w-72 md:w-[600px] border-solid border-2 p-3 rounded-lg">
-              <div className="md:mx-4 flex">
-                <div className="flex grow">
-                  <img src={coffee} className="h-20 w-24 rounded-xl " alt="coffee" />
-                </div>
-                <div>
-                  <div className='text-end font-medium text-sm w-40 md:w-auto text-white md:text-xl my-2'> {product.product}</div>
-                  <div className="flex justify-end text-sm md:text-xl my-2">{`₹ ${product.price}`}</div>
+
+  const handelDelete = async (e) => {
+    const docRef = doc(db, "users", localStorage.getItem("id"));
+    const srno = e.target.value
+    console.log(srno);
+    await updateDoc(docRef, {
+      [`favourite.${srno}`]: deleteField()
+    })
+  }
+  if (data && Object.values(data[0].favourite).length == 0) {
+    return (
+      <>
+        <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
+          <Link to={"/"}><FaArrowLeft className=" w-5 h-5" /></Link>
+          <div className="ml-5 text-xl  text-white">Your Favourite</div>
+        </nav>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-2xl text-primary text-center">Add Items to Your Favourite List</div>
+        </div>
+      </>
+    )
+  }
+  else {
+    return (
+      <>
+        <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
+          <Link to={"/"}><FaArrowLeft className=" w-5 h-5" /></Link>
+          <div className="ml-5 text-xl  text-white">Your Favourite</div>
+        </nav>
+        <div className="flex items-center flex-col">
+          {data ? Object.values(data[0].favourite).map(product =>
+            <div key={product.srno}>
+              <div className="flex flex-col mb-5 w-80 md:w-[600px] border-solid border-2 p-3 rounded-lg">
+                <div className="md:mx-4 flex items-center">
+                  <div className="flex grow">
+                    <img src={coffee} className="h-20 w-20 rounded-xl " alt="coffee" />
+                  </div>
+                  <div>
+                    <div className='text-end font-medium text-sm w-36 md:w-auto text-white md:text-xl my-2'> {product.product}</div>
+                    <div className="flex justify-end text-sm md:text-xl my-2">{`₹ ${product.price}`}</div>
+                  </div>
+                  <div>
+                    <button className="btn ml-4" value={product.srno} onClick={handelDelete}>X</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>) : null}
-      </ol>
-    </>
-  );
+            </div>) : null}
+        </div>
+      </>
+    );
+  }
 }
 
 export default Favourite;

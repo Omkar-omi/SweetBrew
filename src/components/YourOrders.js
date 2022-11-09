@@ -68,7 +68,7 @@ const YourOrders = () => {
                 </div>
                 <hr />
               </div>) : null}
-            {(product.review == "" || product.rating == "") && <div className="flex items-center justify-end mt-2" value={index} onMouseEnter={() => setId(product.orderid)}>
+            {(product.review == "" || product.rating == "") && <div className="flex items-center justify-end mt-2" value={index} onMouseEnter={() => setId(product.orderid)} onTouchStart={() => setId(product.orderid)}>
               <label htmlFor="rating-modal" className="cursor-pointer md:text-lg" value={product.orderid} >Rate </label>
               <div><BsChevronRight /></div>
             </div>}

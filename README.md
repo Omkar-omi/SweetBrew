@@ -43,4 +43,4 @@
 6. Removing items form cart. &#9989;
 7. Your Past orders menue. &#9989;
 8. Rating the orders and wrinting review feature. &#9989;
-9. Add items to favourite list. &#9989;
+9. Add/Remove items to favourite list. &#9989;
