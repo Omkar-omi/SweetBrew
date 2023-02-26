@@ -58,7 +58,7 @@ const CurrentOrder = () => {
     }, 500);
   };
 
-  if (data && data[0]?.cart.length == 0) {
+  if (data && Object.values(data[0]?.cart).length === 0) {
     return (
       <div className="sm:block hidden bg-neutral p-10 min-w-[384px] mt-10">
         <div className="text-2xl text-gray-400 font-semibold mb-7">
