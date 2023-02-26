@@ -11,10 +11,13 @@ import {
 import { useEffect, useState } from "react";
 import db from "../firebase";
 import coffee from "../images/Coffee.jpg";
+import nosearch from "../images/nosearch.png";
 import { AiFillHeart } from "react-icons/ai";
 
 const ProductFilter = () => {
   const [data, setData] = useState();
+  const [searchdata, setSearchData] = useState();
+  const [searching, setSearching] = useState(false);
   const [dataCopy, setDataCopy] = useState();
   const [qty, setQty] = useState();
   const [price, setPrice] = useState();
@@ -111,6 +114,27 @@ const ProductFilter = () => {
     );
     setNo(no + 1);
   };
+
+  const handleSearch = (e) => {
+    let itemList = [];
+    setSearching(true);
+    data?.map((item) => {
+      if (e.target.value === "") {
+        setSearchData("");
+        setSearching(false);
+      } else if (
+        item.name
+          .toLocaleLowerCase()
+          .includes(e.target.value.toLocaleLowerCase())
+      ) {
+        itemList.push(item);
+      }
+
+      setSearchData(itemList);
+      console.log(searchdata);
+    });
+  };
+
   if (data == "") {
     return (
       <>
@@ -120,19 +144,7 @@ const ProductFilter = () => {
               type="text"
               placeholder="Search categoty or menu"
               className="input text-white input-bordered border-primary grow"
-              onChange={(e) => {
-                if (e.target.value.length > 0) {
-                  setData(
-                    data.filter((product) =>
-                      product.name
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase())
-                    )
-                  );
-                } else {
-                  setData(dataCopy);
-                }
-              }}
+              onChange={handleSearch}
             />
           </div>
           <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
@@ -182,19 +194,7 @@ const ProductFilter = () => {
               type="text"
               placeholder="Search categoty or menu"
               className="input text-white input-bordered border-primary grow"
-              onChange={(e) => {
-                if (e.target.value.length > 0) {
-                  setData(
-                    data.filter((product) =>
-                      product.name
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase())
-                    )
-                  );
-                } else {
-                  setData(dataCopy);
-                }
-              }}
+              onChange={handleSearch}
             />
           </div>
           <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
@@ -230,9 +230,25 @@ const ProductFilter = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap  mt-10 justify-items-center">
-          {data
-            ? data.map((product, index) => (
+        {searching ? (
+          <div
+            className={`flex flex-wrap  mt-10 ${
+              searching && searchdata.length === 0 && "justify-center"
+            } `}
+          >
+            {searchdata.length === 0 ? (
+              <div className="flex flex-col gap-4 justify-center items-center">
+                <img
+                  src={nosearch}
+                  className="h-[300px] w-[300px]"
+                  alt="no-search"
+                />
+                <div className="text-[24px] font-[700]">
+                  No search results found
+                </div>
+              </div>
+            ) : (
+              searchdata.map((product, index) => (
                 <div
                   className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
                   key={product.id}
@@ -295,8 +311,77 @@ const ProductFilter = () => {
                   </div>
                 </div>
               ))
-            : null}
-        </div>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-wrap  mt-10 justify-items-center">
+            {data
+              ? data.map((product, index) => (
+                  <div
+                    className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
+                    key={product.id}
+                  >
+                    <div
+                      className="absolute top-2 right-2 tooltip tooltip-left rounded-lg"
+                      data-tip="Add to Favourite"
+                      onMouseEnter={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                      onTouchStart={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                    >
+                      <AiFillHeart
+                        className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125"
+                        onClick={handelFavourite}
+                      />
+                    </div>
+                    <figure>
+                      <img src={coffee} alt="coffee" className="w-80 h-52" />
+                    </figure>
+                    <div className="card-body">
+                      <h2 className="card-title text-white h-10 ">
+                        {product.name}
+                      </h2>
+                      <div className="">
+                        Description: {truncate(product.description)}
+                      </div>
+                      <div className="card-actions flex">
+                        <div className="text-green-600 text-lg">
+                          Price: ₹ {product.price}
+                        </div>
+                        <input
+                          type="number"
+                          min={0}
+                          max={100}
+                          id="input"
+                          placeholder="Enter Quantity"
+                          className=" grow rounded-lg pl-3 py-1 icon"
+                          required
+                          onChange={(e) => {
+                            setQty(e.target.value);
+                            setPrice(product.price);
+                          }}
+                          autoComplete="off"
+                        />
+                      </div>
+                      <button
+                        className="btn btn-primary"
+                        value={product.name}
+                        onClick={handelAddToCart}
+                      >
+                        Add to cart
+                      </button>
+                    </div>
+                  </div>
+                ))
+              : null}
+          </div>
+        )}
       </>
     );
   }
