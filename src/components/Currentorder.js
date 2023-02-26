@@ -136,8 +136,49 @@ const CurrentOrder = () => {
                             x
                           </button>
                         </div>
-                        <div className="flex flex-row  mt-5">
-                          <div className="text-warning mr-14">{`${product.quantity} x`}</div>
+                        <div className="flex flex-row  mt-5 items-center justify-between">
+                          <div className="flex items-center">
+                            <div
+                              className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
+                              onClick={async () => {
+                                const docRef = doc(db, "users", user.uid);
+
+                                await updateDoc(docRef, {
+                                  [`cart.${product.srno}.quantity`]:
+                                    Number(product.quantity) + 1,
+                                  [`cart.${product.srno}.price`]:
+                                    product.price + product.actual_price,
+                                  cartvalue: increment(product.actual_price),
+                                });
+                              }}
+                            >
+                              <div className="mx-3 mb-1">+</div>
+                            </div>
+                            <div className="text-warning mx-3">{`${product.quantity} x`}</div>
+                            <div
+                              className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
+                              onClick={async (e) => {
+                                const docRef = doc(db, "users", user.uid);
+                                if (product.quantity === 1) {
+                                  await updateDoc(docRef, {
+                                    [`cart.${product.srno}`]: deleteField(),
+                                    cartvalue: increment(-product.actual_price),
+                                  });
+                                } else {
+                                  await updateDoc(docRef, {
+                                    [`cart.${product.srno}.quantity`]:
+                                      Number(product.quantity) - 1,
+                                    [`cart.${product.srno}.price`]:
+                                      product.price - product.actual_price,
+
+                                    cartvalue: increment(-product.actual_price),
+                                  });
+                                }
+                              }}
+                            >
+                              <div className="mx-3 mb-1">-</div>
+                            </div>
+                          </div>
                           <div>{`₹ ${product.price}`}</div>
                         </div>
                       </div>

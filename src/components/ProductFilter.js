@@ -78,6 +78,7 @@ const ProductFilter = () => {
               quantity: qty,
               product: e.target.value,
               price: price * qty,
+              actual_price: price,
             },
           },
         },
