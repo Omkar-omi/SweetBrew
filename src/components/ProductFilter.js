@@ -67,8 +67,6 @@ const ProductFilter = () => {
     input?.length > 75 ? `${input.substring(0, 75)}...` : input;
 
   const handelAddToCart = async (e) => {
-    const auth = getAuth();
-    const user = auth.currentUser;
     if (qty > 0) {
       const docRef = doc(db, "users", localStorage.getItem("id"));
       setDoc(
@@ -85,9 +83,11 @@ const ProductFilter = () => {
         },
         { merge: true }
       );
+
       updateDoc(docRef, {
-        cartvalue: increment(qty * price),
+        cartvalue: increment(price * qty),
       });
+
       setQty(0);
       setNo(no + 1);
       document.querySelectorAll("#input").forEach((input) => {
@@ -134,7 +134,7 @@ const ProductFilter = () => {
       console.log(searchdata);
     });
   };
-
+  console.log(qty * price);
   return (
     <>
       <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
@@ -245,7 +245,6 @@ const ProductFilter = () => {
                       required
                       onChange={(e) => {
                         setQty(e.target.value);
-                        setPrice(product.price);
                       }}
                       autoComplete="off"
                     />
@@ -253,6 +252,8 @@ const ProductFilter = () => {
                   <button
                     className="btn btn-primary"
                     value={product.name}
+                    onMouseEnter={() => setPrice(product.price)}
+                    onTouchStart={() => setPrice(product.price)}
                     onClick={handelAddToCart}
                   >
                     Add to cart
@@ -292,39 +293,44 @@ const ProductFilter = () => {
                   <figure>
                     <img src={coffee} alt="coffee" className="w-80 h-52" />
                   </figure>
-                  <div className="card-body">
-                    <h2 className="card-title text-white h-10 ">
-                      {product.name}
-                    </h2>
-                    <div className="">
-                      Description: {truncate(product.description)}
-                    </div>
-                    <div className="card-actions flex">
-                      <div className="text-green-600 text-lg">
-                        Price: ₹ {product.price}
+                  <div className="card-body flex flex-col justify-between items-center">
+                    <div>
+                      <h2 className="card-title text-white h-10 ">
+                        {product.name}
+                      </h2>
+                      <div className="">
+                        Description: {truncate(product.description)}
                       </div>
-                      <input
-                        type="number"
-                        min={0}
-                        max={100}
-                        id="input"
-                        placeholder="Enter Quantity"
-                        className=" grow rounded-lg pl-3 py-1 icon"
-                        required
-                        onChange={(e) => {
-                          setQty(e.target.value);
-                          setPrice(product.price);
-                        }}
-                        autoComplete="off"
-                      />
                     </div>
-                    <button
-                      className="btn btn-primary"
-                      value={product.name}
-                      onClick={handelAddToCart}
-                    >
-                      Add to cart
-                    </button>
+                    <div className="w-full flex flex-col gap-2">
+                      <div className="card-actions flex">
+                        <div className="text-green-600 text-lg">
+                          Price: ₹ {product.price}
+                        </div>
+                        <input
+                          type="number"
+                          min={0}
+                          max={100}
+                          id="input"
+                          placeholder="Enter Quantity"
+                          className=" grow rounded-lg pl-3 py-1 icon customInput"
+                          required
+                          onChange={(e) => {
+                            setQty(e.target.value);
+                          }}
+                          autoComplete="off"
+                        />
+                      </div>
+                      <button
+                        className="btn btn-primary w-full"
+                        value={product.name}
+                        onMouseEnter={() => setPrice(product.price)}
+                        onTouchStart={() => setPrice(product.price)}
+                        onClick={handelAddToCart}
+                      >
+                        Add to cart
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))

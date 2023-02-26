@@ -133,11 +133,11 @@ const CurrentOrder = () => {
                             value={product.srno}
                             data-price={product.price}
                           >
-                            X
+                            x
                           </button>
                         </div>
                         <div className="flex flex-row  mt-5">
-                          <div className="text-warning mr-14">{`${product.quantity} X`}</div>
+                          <div className="text-warning mr-14">{`${product.quantity} x`}</div>
                           <div>{`₹ ${product.price}`}</div>
                         </div>
                       </div>
