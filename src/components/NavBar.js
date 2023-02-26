@@ -148,7 +148,7 @@ const NavBar = () => {
                                     className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
                                     onClick={async (e) => {
                                       const docRef = doc(db, "users", user.uid);
-                                      if (product.quantity === 1) {
+                                      if (product.quantity <= 1) {
                                         await updateDoc(docRef, {
                                           [`cart.${product.srno}`]:
                                             deleteField(),
