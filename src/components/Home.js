@@ -3,6 +3,8 @@ import NavBar from "./NavBar";
 import ProductFilter from "./ProductFilter";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { auth } from "../firebase";
+
 
 const Home = () => {
   const navigate = useNavigate();
