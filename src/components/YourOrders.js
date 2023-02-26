@@ -48,7 +48,7 @@ const YourOrders = () => {
 
   return (
     <>
-      <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
+      <nav className="m-5 flex items-center  pb-3 border-b-2 border-solid border-primary ">
         <Link to={"/"}><FaArrowLeft className=" w-5 h-5" /> </Link>
         <div className="ml-5 text-xl  text-white">Order History</div>
       </nav>
