@@ -13,6 +13,7 @@ import coffee from "../images/Coffee.jpg";
 import db from "../firebase";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import empty from "../images/empty.png";
 
 const CurrentOrder = () => {
   const auth = getAuth();
@@ -65,9 +66,17 @@ const CurrentOrder = () => {
           Current Order
         </div>
         <div className="flex flex-col ">
-          <div className="overflow-y-scroll scroll-m-4 snap-start h-96 border-solid border-b-2 border-primary scrollbar">
+          <div className="h-96 border-solid border-b-2 border-primary scrollbar">
             {/* outer div */}
-            <div>{`Empty Cart : (`}</div>
+            <div className="flex flex-col justify-center items-center h-full">
+              <img
+                src={empty}
+                className="h-20 w-20 rounded-xl "
+                alt="empty cart"
+              />
+              <div className="font-[600]">Empty cart</div>
+              <div className="font-[600]">Add Items to your cart</div>
+            </div>
           </div>
           <div className="mt-11">
             <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
