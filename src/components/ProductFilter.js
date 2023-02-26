@@ -135,120 +135,137 @@ const ProductFilter = () => {
     });
   };
 
-  if (data == "") {
-    return (
-      <>
-        <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
-          <div className="flex flex-row form-control md:grow">
-            <input
-              type="text"
-              placeholder="Search categoty or menu"
-              className="input text-white input-bordered border-primary grow"
-              onChange={handleSearch}
-            />
-          </div>
-          <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
-            <div
-              className="tab text-xl text-white hover:text-primary active:text-warning"
-              onClick={getAllData}
-            >
-              All
-            </div>
-            <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("coffee");
-              }}
-            >
-              Coffee
-            </div>
-            <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("deserts");
-              }}
-            >
-              Deserts
-            </div>
-            <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("snacks");
-              }}
-            >
-              Snacks
-            </div>
-          </div>
+  return (
+    <>
+      <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
+        <div className="flex flex-row form-control md:grow">
+          <input
+            type="text"
+            placeholder="Search categoty or menu"
+            className="input text-white input-bordered border-primary grow"
+            onChange={handleSearch}
+          />
         </div>
-        <div className="grid place-items-center h-screen text-primary">
-          <div className="text-5xl ">No results found</div>
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
-          <div className="flex flex-row form-control md:grow">
-            <input
-              type="text"
-              placeholder="Search categoty or menu"
-              className="input text-white input-bordered border-primary grow"
-              onChange={handleSearch}
-            />
-          </div>
-          <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
-            <div
-              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-warning"
-              onClick={getAllData}
-            >
-              All
-            </div>
-            <div
-              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("coffee");
-              }}
-            >
-              Coffee
-            </div>
-            <div
-              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("deserts");
-              }}
-            >
-              Deserts
-            </div>
-            <div
-              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
-              onClick={() => {
-                getCoffeType("snacks");
-              }}
-            >
-              Snacks
-            </div>
-          </div>
-        </div>
-        {searching ? (
+        <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
           <div
-            className={`flex flex-wrap  mt-10 ${
-              searching && searchdata.length === 0 && "justify-center"
-            } `}
+            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-warning"
+            onClick={getAllData}
           >
-            {searchdata.length === 0 ? (
-              <div className="flex flex-col gap-4 justify-center items-center">
-                <img
-                  src={nosearch}
-                  className="h-[300px] w-[300px]"
-                  alt="no-search"
-                />
-                <div className="text-[24px] font-[700]">
-                  No search results found
+            All
+          </div>
+          <div
+            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            onClick={() => {
+              getCoffeType("coffee");
+            }}
+          >
+            Coffee
+          </div>
+          <div
+            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            onClick={() => {
+              getCoffeType("deserts");
+            }}
+          >
+            Deserts
+          </div>
+          <div
+            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            onClick={() => {
+              getCoffeType("snacks");
+            }}
+          >
+            Snacks
+          </div>
+        </div>
+      </div>
+      {searching ? (
+        <div
+          className={`flex flex-wrap  mt-10 ${
+            searching && searchdata.length === 0 && "justify-center"
+          } `}
+        >
+          {searchdata.length === 0 ? (
+            <div className="flex flex-col gap-4 justify-center items-center">
+              <img
+                src={nosearch}
+                className="h-[300px] w-[300px]"
+                alt="no-search"
+              />
+              <div className="text-[24px] font-[700]">
+                No search results found
+              </div>
+            </div>
+          ) : (
+            searchdata.map((product, index) => (
+              <div
+                className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
+                key={product.id}
+              >
+                <div
+                  className="absolute top-2 right-2 tooltip tooltip-left rounded-lg"
+                  data-tip="Add to Favourite"
+                  onMouseEnter={() => {
+                    setfavouriteName(product.name);
+                    setfavouritePrice(product.price);
+                    setIndex(product.srno);
+                  }}
+                  onTouchStart={() => {
+                    setfavouriteName(product.name);
+                    setfavouritePrice(product.price);
+                    setIndex(product.srno);
+                  }}
+                >
+                  <AiFillHeart
+                    className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125"
+                    onClick={handelFavourite}
+                  />
+                </div>
+                <figure>
+                  <img src={coffee} alt="coffee" className="w-80 h-52" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title text-white h-10 ">
+                    {product.name}
+                  </h2>
+                  <div className="">
+                    Description: {truncate(product.description)}
+                  </div>
+                  <div className="card-actions flex">
+                    <div className="text-green-600 text-lg">
+                      Price: ₹ {product.price}
+                    </div>
+                    <input
+                      type="number"
+                      min={0}
+                      max={100}
+                      id="input"
+                      placeholder="Enter Quantity"
+                      className=" grow rounded-lg pl-3 py-1 icon"
+                      required
+                      onChange={(e) => {
+                        setQty(e.target.value);
+                        setPrice(product.price);
+                      }}
+                      autoComplete="off"
+                    />
+                  </div>
+                  <button
+                    className="btn btn-primary"
+                    value={product.name}
+                    onClick={handelAddToCart}
+                  >
+                    Add to cart
+                  </button>
                 </div>
               </div>
-            ) : (
-              searchdata.map((product, index) => (
+            ))
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-wrap  mt-10 justify-items-center">
+          {data
+            ? data.map((product, index) => (
                 <div
                   className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
                   key={product.id}
@@ -311,80 +328,11 @@ const ProductFilter = () => {
                   </div>
                 </div>
               ))
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-wrap  mt-10 justify-items-center">
-            {data
-              ? data.map((product, index) => (
-                  <div
-                    className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
-                    key={product.id}
-                  >
-                    <div
-                      className="absolute top-2 right-2 tooltip tooltip-left rounded-lg"
-                      data-tip="Add to Favourite"
-                      onMouseEnter={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
-                      onTouchStart={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
-                    >
-                      <AiFillHeart
-                        className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125"
-                        onClick={handelFavourite}
-                      />
-                    </div>
-                    <figure>
-                      <img src={coffee} alt="coffee" className="w-80 h-52" />
-                    </figure>
-                    <div className="card-body">
-                      <h2 className="card-title text-white h-10 ">
-                        {product.name}
-                      </h2>
-                      <div className="">
-                        Description: {truncate(product.description)}
-                      </div>
-                      <div className="card-actions flex">
-                        <div className="text-green-600 text-lg">
-                          Price: ₹ {product.price}
-                        </div>
-                        <input
-                          type="number"
-                          min={0}
-                          max={100}
-                          id="input"
-                          placeholder="Enter Quantity"
-                          className=" grow rounded-lg pl-3 py-1 icon"
-                          required
-                          onChange={(e) => {
-                            setQty(e.target.value);
-                            setPrice(product.price);
-                          }}
-                          autoComplete="off"
-                        />
-                      </div>
-                      <button
-                        className="btn btn-primary"
-                        value={product.name}
-                        onClick={handelAddToCart}
-                      >
-                        Add to cart
-                      </button>
-                    </div>
-                  </div>
-                ))
-              : null}
-          </div>
-        )}
-      </>
-    );
-  }
+            : null}
+        </div>
+      )}
+    </>
+  );
 };
 
 export default ProductFilter;

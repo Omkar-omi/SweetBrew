@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { auth } from "../firebase";
 
-
 const Home = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
 
   useEffect(() => {
-    if (!user) navigate("/login");
-  }, []);
+    if (user === null) navigate("/login");
+  }, [user]);
 
   return (
     <div>
