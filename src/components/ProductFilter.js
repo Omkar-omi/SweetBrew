@@ -199,13 +199,13 @@ const ProductFilter = () => {
           </div>
           <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
             <div
-              className="tab text-xl text-white hover:text-primary active:text-warning"
+              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-warning"
               onClick={getAllData}
             >
               All
             </div>
             <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
+              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
               onClick={() => {
                 getCoffeType("coffee");
               }}
@@ -213,7 +213,7 @@ const ProductFilter = () => {
               Coffee
             </div>
             <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
+              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
               onClick={() => {
                 getCoffeType("deserts");
               }}
@@ -221,7 +221,7 @@ const ProductFilter = () => {
               Deserts
             </div>
             <div
-              className="tab text-xl text-white hover:text-primary active:text-primary"
+              className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
               onClick={() => {
                 getCoffeType("snacks");
               }}
@@ -234,7 +234,7 @@ const ProductFilter = () => {
           {data
             ? data.map((product, index) => (
                 <div
-                  className="relative card w-80 lg:w-80 bg-neutral shadow-xl mb-5 mx-10"
+                  className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
                   key={product.id}
                 >
                   <div
