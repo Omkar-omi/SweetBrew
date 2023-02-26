@@ -135,7 +135,7 @@ const ProductFilter = () => {
       console.log(searchdata);
     });
   };
-  console.log(qty * price);
+
   return (
     <>
       <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
