@@ -75,7 +75,7 @@ const ProductFilter = () => {
           cart: {
             [`${no}`]: {
               srno: no,
-              quantity: qty,
+              quantity: Number(qty),
               product: e.target.value,
               price: price * qty,
               actual_price: price,
