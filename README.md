@@ -1,11 +1,12 @@
 ## This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), [Tailwind Css](https://github.com/tailwindlabs/tailwindcss) , [DaisyUI](https://github.com/saadeghi/daisyui) and Firebase
 
-You can heck this project here: https://coffee-order-dashbord.vercel.app/login
+You can heck this project here: https://coffee-order-dashbord.vercel.app
 
 
 
 ## Dashbord UI
-![home page](https://user-images.githubusercontent.com/113718239/200560159-ccf1f2cd-967d-40ec-9a2e-0880f162d2b5.png)
+![image](https://user-images.githubusercontent.com/113718239/221593191-1c5c3be9-8421-4140-a3f4-3d5fc689c7c7.png)
+
 
 
 ## Dashbord UI(small Screen)
@@ -45,3 +46,4 @@ You can heck this project here: https://coffee-order-dashbord.vercel.app/login
 7. Your Past orders menue. &#9989;
 8. Rating the orders and wrinting review feature. &#9989;
 9. Add/Remove items to favourite list. &#9989;
+10. Added increase/decrease button on current order screen. &#9989;
