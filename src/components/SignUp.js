@@ -33,7 +33,7 @@ const SignUp = () => {
         localStorage.setItem("email", email);
 
         await setDoc(doc(db, "users", createdUser?.user?.uid), {
-          name: createdUser?.user?.displayName,
+          name: name.charAt(0).toUpperCase() + name.slice(1),
           cart: {},
           cartvalue: 0,
           address: "",
@@ -43,7 +43,7 @@ const SignUp = () => {
         });
         setTimeout(async () => {
           navigate("/");
-        }, 2000);
+        }, 800);
 
         await updateProfile(auth.currentUser, {
           displayName: dispName,
