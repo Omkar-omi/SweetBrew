@@ -7,14 +7,14 @@ import { doc, setDoc } from "firebase/firestore";
 import db from "../firebase";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [cnfpassword, setcnfPassword] = useState("");
+  const [name, setName] = useState("aasas");
+  const [email, setEmail] = useState("asas@asas.com");
+  const [password, setPassword] = useState("1234567890");
+  const [cnfpassword, setcnfPassword] = useState("1234567890");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { createUser, user } = UserAuth();
+  const { createUser } = UserAuth();
 
   const handelSignup = async (e) => {
     e.preventDefault();
@@ -25,24 +25,26 @@ const SignUp = () => {
       setIsPending(false);
     } else {
       try {
-        await createUser(email, password);
-        let dispName = name;
-        dispName = name.charAt(0).toUpperCase() + dispName.slice(1);
+        const createdUser = await createUser(email, password);
+        let dispName = name.charAt(0).toUpperCase() + name.slice(1);
+
+        localStorage.setItem("name", dispName);
+        localStorage.setItem("id", createdUser?.user?.uid);
+        localStorage.setItem("email", email);
+
+        await setDoc(doc(db, "users", createdUser?.user?.uid), {
+          name: createdUser?.user?.displayName,
+          cart: {},
+          cartvalue: 0,
+          address: "",
+          favourite: {},
+          yourorders: {},
+          email: createdUser?.user?.email,
+        });
         setTimeout(async () => {
-          localStorage.setItem("name", dispName);
-          localStorage.setItem("id", user?.uid);
-          localStorage.setItem("email", email);
-          await setDoc(doc(db, "users", localStorage.getItem("id")), {
-            name: localStorage.getItem("name"),
-            cart: {},
-            cartvalue: 0,
-            address: "",
-            favourite: {},
-            yourorders: {},
-            email: localStorage.getItem("email"),
-          });
           navigate("/");
         }, 2000);
+
         await updateProfile(auth.currentUser, {
           displayName: dispName,
         });
