@@ -21,7 +21,6 @@ const Login = () => {
     };
   }, [user]);
 
-
   const handelLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -30,9 +29,9 @@ const Login = () => {
       await signin(email, password);
       const auth = getAuth();
       const user = auth.currentUser;
-      localStorage.setItem("name", user.displayName);
-      localStorage.setItem("id", user.uid);
-      localStorage.setItem("email", user.email);
+      localStorage.setItem("name", user?.displayName);
+      localStorage.setItem("id", user?.uid);
+      localStorage.setItem("email", user?.email);
       navigate("/");
       setIsPending(false);
     } catch (e) {
