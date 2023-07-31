@@ -98,7 +98,6 @@ const ProductFilter = () => {
   };
 
   const handelFavourite = async () => {
-    console.log(index);
     const docRef = doc(db, "users", localStorage.getItem("id"));
     setDoc(
       docRef,
@@ -132,7 +131,6 @@ const ProductFilter = () => {
       }
 
       setSearchData(itemList);
-      console.log(searchdata);
     });
   };
 

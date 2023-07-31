@@ -91,7 +91,7 @@ const Profile = () => {
           });
       }).catch((error) => {
         setError("Wrong old Password Try again")
-        console.log(error);
+        console.error(error);
         setIsPending(false)
       });
   }

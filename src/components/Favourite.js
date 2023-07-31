@@ -25,7 +25,7 @@ const Favourite = () => {
   const handelDelete = async (e) => {
     const docRef = doc(db, "users", localStorage.getItem("id"));
     const srno = e.target.value
-    console.log(srno);
+    // console.log(srno);
     await updateDoc(docRef, {
       [`favourite.${srno}`]: deleteField()
     })

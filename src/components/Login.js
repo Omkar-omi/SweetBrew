@@ -5,8 +5,8 @@ import { UserAuth } from "../context/AuthContext";
 
 const Login = () => {
   const { signin, user } = UserAuth();
-  const [email, setEmail] = useState("test2@test.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Login = () => {
       clearTimeout(checkUser);
     };
   }, [user]);
-  console.log();
+
 
   const handelLogin = async (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const Login = () => {
       setIsPending(false);
     } catch (e) {
       setError("Email or Password dosen't match");
-      console.log(e.message);
+      console.error(e.message);
       setIsPending(false);
     }
   };

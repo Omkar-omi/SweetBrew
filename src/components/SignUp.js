@@ -32,7 +32,6 @@ const SignUp = () => {
           localStorage.setItem("name", dispName);
           localStorage.setItem("id", user?.uid);
           localStorage.setItem("email", email);
-          console.log(user);
           await setDoc(doc(db, "users", localStorage.getItem("id")), {
             name: localStorage.getItem("name"),
             cart: {},
@@ -51,7 +50,7 @@ const SignUp = () => {
         setIsPending(false);
       } catch (e) {
         setError("Email or Password dosen't match");
-        console.log(e.message);
+        console.error(e.message);
         setIsPending(false);
       }
     }

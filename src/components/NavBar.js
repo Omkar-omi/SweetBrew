@@ -60,7 +60,7 @@ const NavBar = () => {
       navigate("/login");
       alert(`${user.displayName} has logged out`);
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
     }
   };
 

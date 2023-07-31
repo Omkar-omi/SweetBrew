@@ -167,7 +167,7 @@ const CurrentOrder = () => {
                                   "users",
                                   localStorage.getItem("id")
                                 );
-                                console.log(product.quantity);
+                                // console.log(product.quantity);
                                 if (product.quantity <= 1) {
                                   await updateDoc(docRef, {
                                     [`cart.${product.srno}`]: deleteField(),
