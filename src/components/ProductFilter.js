@@ -1,4 +1,3 @@
-import { getAuth } from "firebase/auth";
 import {
   collection,
   doc,
@@ -8,13 +7,15 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import db from "../firebase";
 import coffee from "../images/Coffee.jpg";
 import nosearch from "../images/nosearch.png";
 import { AiFillHeart } from "react-icons/ai";
+import { UserContext } from "../context/AuthContext";
 
 const ProductFilter = () => {
+  const { user } = useContext(UserContext);
   const [data, setData] = useState();
   const [searchdata, setSearchData] = useState();
   const [searching, setSearching] = useState(false);
@@ -68,7 +69,7 @@ const ProductFilter = () => {
 
   const handelAddToCart = async (e) => {
     if (qty > 0) {
-      const docRef = doc(db, "users", localStorage.getItem("id"));
+      const docRef = doc(db, "users", user?.uid);
       setDoc(
         docRef,
         {
@@ -98,7 +99,7 @@ const ProductFilter = () => {
   };
 
   const handelFavourite = async () => {
-    const docRef = doc(db, "users", localStorage.getItem("id"));
+    const docRef = doc(db, "users", user?.uid);
     setDoc(
       docRef,
       {

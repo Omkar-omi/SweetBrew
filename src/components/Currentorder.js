@@ -8,28 +8,28 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import coffee from "../images/Coffee.jpg";
 import db from "../firebase";
-import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import empty from "../images/empty.png";
+import { UserContext } from "../context/AuthContext";
 
 const CurrentOrder = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   const [data, setData] = useState();
   const getData = async () => {
     const docRef = query(
       collection(db, "users"),
-      where("name", "==", localStorage.getItem("name"))
+      where("email", "==", user?.email)
     );
     onSnapshot(docRef, (snapshot) => {
       setData(
@@ -42,7 +42,7 @@ const CurrentOrder = () => {
   };
 
   const handelDelete = async (e) => {
-    const docRef = doc(db, "users", localStorage.getItem("id"));
+    const docRef = doc(db, "users", user?.uid);
     const srno = e.target.value;
     const price = e.target.getAttribute("data-price");
 
@@ -141,11 +141,7 @@ const CurrentOrder = () => {
                             <div
                               className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
                               onClick={async () => {
-                                const docRef = doc(
-                                  db,
-                                  "users",
-                                  localStorage.getItem("id")
-                                );
+                                const docRef = doc(db, "users", user?.uid);
 
                                 await updateDoc(docRef, {
                                   [`cart.${product.srno}.quantity`]:
@@ -162,11 +158,7 @@ const CurrentOrder = () => {
                             <div
                               className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
                               onClick={async (e) => {
-                                const docRef = doc(
-                                  db,
-                                  "users",
-                                  localStorage.getItem("id")
-                                );
+                                const docRef = doc(db, "users", user?.uid);
                                 // console.log(product.quantity);
                                 if (product.quantity <= 1) {
                                   await updateDoc(docRef, {

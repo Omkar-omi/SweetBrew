@@ -2,12 +2,12 @@ import CurrentOrder from "./Currentorder";
 import NavBar from "./NavBar";
 import ProductFilter from "./ProductFilter";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { auth } from "../firebase";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../context/AuthContext";
 
 const Home = () => {
   const navigate = useNavigate();
-  const user = auth.currentUser;
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user === null) navigate("/login");

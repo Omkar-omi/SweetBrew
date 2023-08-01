@@ -12,12 +12,12 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import coffee from "../images/Coffee.jpg";
 import db from "../firebase";
 import { BsInfoCircle, BsCreditCard2Back } from "react-icons/bs";
 import { CgGoogle } from "react-icons/cg";
-import { getAuth } from "firebase/auth";
+import { UserContext } from "../context/AuthContext";
 
 const Checkout = () => {
   const [data, setData] = useState();
@@ -34,17 +34,16 @@ const Checkout = () => {
   const [cart, setCart] = useState();
   const [cartvalue, setCartvalue] = useState();
   const navigate = useNavigate();
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   const getData = async () => {
     const docRef = query(
       collection(db, "users"),
-      where("name", "==", localStorage.getItem("name"))
+      where("email", "==", user?.email)
     );
     onSnapshot(docRef, (snapshot) => {
       setData(
@@ -63,7 +62,7 @@ const Checkout = () => {
     });
   };
   const handleAddAddress = () => {
-    const docRef = doc(db, "users", localStorage.getItem("id"));
+    const docRef = doc(db, "users", user?.uid);
     setDoc(
       docRef,
       {
@@ -77,12 +76,12 @@ const Checkout = () => {
     setIsPending(true);
     if (deliverymethod && paymentmethod && address) {
       const docRef = await addDoc(collection(db, "orders"), {
-        name: localStorage.getItem("name"),
+        name: user?.displayName,
         address: address,
         area: area || "",
         pincode: pincode || "",
         cart: cart,
-        email: localStorage.getItem("email"),
+        email: user?.email,
         paymentmethod: paymentmethod,
         deliverymethod: delivery,
         time: serverTimestamp(),
@@ -96,7 +95,7 @@ const Checkout = () => {
           cartvalue: Number(cartvalue + (cartvalue / 100) * 18 - 10).toFixed(2),
         });
       }
-      await updateDoc(doc(db, "users", localStorage.getItem("id")), {
+      await updateDoc(doc(db, "users", user?.uid), {
         cart: {},
         cartvalue: 0,
       });
@@ -105,7 +104,7 @@ const Checkout = () => {
       const date = timestamp.toLocaleDateString();
 
       setDoc(
-        doc(db, "users", localStorage.getItem("id")),
+        doc(db, "users", user?.uid),
         {
           yourorders: {
             [docRef.id]: {
@@ -269,7 +268,7 @@ const Checkout = () => {
               type="text"
               className="p-2 rounded-lg border-solid border-4 border-green-400"
               id="email"
-              value={localStorage.getItem("email")}
+              value={user?.email}
               readOnly={true}
             />
           </div>

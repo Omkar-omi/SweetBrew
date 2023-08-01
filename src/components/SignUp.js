@@ -2,7 +2,6 @@ import { updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
-import { auth } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../firebase";
 
@@ -28,10 +27,6 @@ const SignUp = () => {
         const createdUser = await createUser(email, password);
         let dispName = name.charAt(0).toUpperCase() + name.slice(1);
 
-        localStorage.setItem("name", dispName);
-        localStorage.setItem("id", createdUser?.user?.uid);
-        localStorage.setItem("email", email);
-
         await setDoc(doc(db, "users", createdUser?.user?.uid), {
           name: name.charAt(0).toUpperCase() + name.slice(1),
           cart: {},
@@ -45,7 +40,7 @@ const SignUp = () => {
           navigate("/");
         }, 800);
 
-        await updateProfile(auth.currentUser, {
+        await updateProfile(createdUser?.user, {
           displayName: dispName,
         });
 

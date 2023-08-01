@@ -1,4 +1,3 @@
-import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
@@ -27,11 +26,6 @@ const Login = () => {
     setIsPending(true);
     try {
       await signin(email, password);
-      const auth = getAuth();
-      const user = auth.currentUser;
-      localStorage.setItem("name", user?.displayName);
-      localStorage.setItem("id", user?.uid);
-      localStorage.setItem("email", user?.email);
       navigate("/");
       setIsPending(false);
     } catch (e) {

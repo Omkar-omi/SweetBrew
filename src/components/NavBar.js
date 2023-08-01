@@ -1,9 +1,8 @@
 import { SiCoffeescript } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { UserAuth, UserContext } from "../context/AuthContext";
 import { BsPersonCircle, BsFillCartFill } from "react-icons/bs";
-import { useEffect, useState } from "react";
-import { getAuth } from "firebase/auth";
+import { useContext, useEffect, useState } from "react";
 import {
   collection,
   deleteField,
@@ -17,19 +16,18 @@ import {
 import db from "../firebase";
 
 const NavBar = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { user } = useContext(UserContext);
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   const [data, setData] = useState();
   const getData = async () => {
     const docRef = query(
       collection(db, "users"),
-      where("name", "==", localStorage.getItem("name"))
+      where("email", "==", user?.email)
     );
     onSnapshot(docRef, (snapshot) => {
       setData(
@@ -41,7 +39,7 @@ const NavBar = () => {
     });
   };
   const handelDelete = async (e) => {
-    const docRef = doc(db, "users", localStorage.getItem("id"));
+    const docRef = doc(db, "users", user?.uid);
     const srno = e.target.value;
     const price = e.target.getAttribute("data-price");
     await updateDoc(docRef, {
@@ -55,10 +53,8 @@ const NavBar = () => {
   const handelLogout = async () => {
     try {
       await logout();
-      localStorage.removeItem("name");
-      localStorage.removeItem("id");
       navigate("/login");
-      alert(`${user.displayName} has logged out`);
+      alert(`${user?.displayName} has logged out`);
     } catch (e) {
       console.error(e.message);
     }
@@ -131,7 +127,7 @@ const NavBar = () => {
                                       const docRef = doc(
                                         db,
                                         "users",
-                                        localStorage.getItem("id")
+                                        user?.uid
                                       );
 
                                       await updateDoc(docRef, {
@@ -154,7 +150,7 @@ const NavBar = () => {
                                       const docRef = doc(
                                         db,
                                         "users",
-                                        localStorage.getItem("id")
+                                        user?.uid
                                       );
                                       if (product.quantity <= 1) {
                                         await updateDoc(docRef, {
@@ -224,8 +220,8 @@ const NavBar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-gray-800 text-white rounded-box w-52 "
           >
             <div className="flex flex-col mb-2 px-2">
-              <div>Name: {localStorage.getItem("name")}</div>
-              <div>Email: {localStorage.getItem("email")}</div>
+              <div>Name: {user?.displayName}</div>
+              <div>Email: {user?.email}</div>
             </div>
             <hr />
             <li>
