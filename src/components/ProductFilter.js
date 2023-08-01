@@ -1,35 +1,56 @@
 import {
   collection,
+  deleteField,
   doc,
   getDocs,
   increment,
   onSnapshot,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import db from "../firebase";
 import coffee from "../images/Coffee.jpg";
 import nosearch from "../images/nosearch.png";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { UserContext } from "../context/AuthContext";
+import hasItemInArray from "../utils/hasItemInArray";
 
 const ProductFilter = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState();
   const [searchdata, setSearchData] = useState();
   const [searching, setSearching] = useState(false);
-  const [dataCopy, setDataCopy] = useState();
   const [qty, setQty] = useState();
   const [price, setPrice] = useState();
   const [no, setNo] = useState(0);
   const [index, setIndex] = useState(0);
   const [favouriteName, setfavouriteName] = useState();
   const [favouritePrice, setfavouritePrice] = useState();
+  const [favData, setFavData] = useState();
 
   useEffect(() => {
     getAllData();
   }, []);
+
+  useEffect(() => {
+    getFavData();
+  }, [user]);
+
+  const getFavData = async () => {
+    const doc1 = doc(db, "users", user?.uid);
+    console.log(doc1.docs);
+    const docRef = query(
+      collection(db, "users"),
+      where("email", "==", user?.email)
+    );
+    onSnapshot(doc1, (snapshot) => {
+      console.log();
+      setFavData(Object.values(snapshot?.data().favourite));
+    });
+  };
 
   const getAllData = async () => {
     const alldata = [];
@@ -50,7 +71,6 @@ const ProductFilter = () => {
     });
 
     setData(alldata);
-    setDataCopy(alldata);
   };
 
   const getCoffeType = async (type) => {
@@ -134,6 +154,12 @@ const ProductFilter = () => {
       setSearchData(itemList);
     });
   };
+  const handelDelete = async (e) => {
+    const docRef = doc(db, "users", user?.uid);
+    await updateDoc(docRef, {
+      [`favourite.${index}`]: deleteField(),
+    });
+  };
 
   return (
     <>
@@ -148,13 +174,13 @@ const ProductFilter = () => {
         </div>
         <div className="tabs tabs-boxed lg:ml-5 lg:mt-0  mt-5 h-14 bg-neutral items-center rounded-2xl">
           <div
-            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-warning"
+            className="tab text-[14px] md:text-[16px] lg:text-xl text-white hover:text-primary active:text-warning px-2"
             onClick={getAllData}
           >
             All
           </div>
           <div
-            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            className="tab text-[14px] md:text-[16px] lg:text-xl text-white hover:text-primary active:text-primary px-2"
             onClick={() => {
               getCoffeType("coffee");
             }}
@@ -162,7 +188,7 @@ const ProductFilter = () => {
             Coffee
           </div>
           <div
-            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            className="tab text-[14px] md:text-[16px] lg:text-xl text-white hover:text-primary active:text-primary px-2"
             onClick={() => {
               getCoffeType("deserts");
             }}
@@ -170,7 +196,7 @@ const ProductFilter = () => {
             Deserts
           </div>
           <div
-            className="tab text-[16px] md:text-xl text-white hover:text-primary active:text-primary"
+            className="tab text-[14px] md:text-[16px] lg:text-xl text-white hover:text-primary active:text-primary px-2"
             onClick={() => {
               getCoffeType("snacks");
             }}
@@ -181,7 +207,7 @@ const ProductFilter = () => {
       </div>
       {searching ? (
         <div
-          className={`flex flex-wrap  mt-10 ${
+          className={`flex flex-wrap  mt-10  justify-center items-center ${
             searching && searchdata.length === 0 && "justify-center"
           } `}
         >
@@ -189,7 +215,7 @@ const ProductFilter = () => {
             <div className="flex flex-col gap-4 justify-center items-center">
               <img
                 src={nosearch}
-                className="h-[300px] w-[300px]"
+                className="h-[300px] w-[350px]"
                 alt="no-search"
               />
               <div className="text-[24px] font-[700]">
@@ -199,81 +225,13 @@ const ProductFilter = () => {
           ) : (
             searchdata.map((product, index) => (
               <div
-                className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
+                className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
                 key={product.id}
               >
-                <div
-                  className="absolute top-2 right-2 tooltip tooltip-left rounded-lg"
-                  data-tip="Add to Favourite"
-                  onMouseEnter={() => {
-                    setfavouriteName(product.name);
-                    setfavouritePrice(product.price);
-                    setIndex(product.srno);
-                  }}
-                  onTouchStart={() => {
-                    setfavouriteName(product.name);
-                    setfavouritePrice(product.price);
-                    setIndex(product.srno);
-                  }}
-                >
-                  <AiFillHeart
-                    className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125"
-                    onClick={handelFavourite}
-                  />
-                </div>
-                <figure>
-                  <img src={coffee} alt="coffee" className="w-80 h-52" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title text-white h-10 ">
-                    {product.name}
-                  </h2>
-                  <div className="">
-                    Description: {truncate(product.description)}
-                  </div>
-                  <div className="card-actions flex">
-                    <div className="text-green-600 text-lg">
-                      Price: ₹ {product.price}
-                    </div>
-                    <input
-                      type="number"
-                      min={0}
-                      max={100}
-                      id="input"
-                      placeholder="Enter Quantity"
-                      className=" grow rounded-lg pl-3 py-1 icon"
-                      required
-                      onChange={(e) => {
-                        setQty(e.target.value);
-                      }}
-                      autoComplete="off"
-                    />
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    value={product.name}
-                    onMouseEnter={() => setPrice(product.price)}
-                    onTouchStart={() => setPrice(product.price)}
-                    onClick={handelAddToCart}
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-wrap  mt-10 justify-items-center">
-          {data
-            ? data.map((product, index) => (
-                <div
-                  className="relative card w-80 lg:w-[300px] bg-neutral shadow-xl mb-5 mx-5"
-                  key={product.id}
-                >
+                {hasItemInArray(favData, product.name) ? (
                   <div
-                    className="absolute top-2 right-2 tooltip tooltip-left rounded-lg"
-                    data-tip="Add to Favourite"
+                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                    data-tip="Remove From Favourite"
                     onMouseEnter={() => {
                       setfavouriteName(product.name);
                       setfavouritePrice(product.price);
@@ -285,13 +243,151 @@ const ProductFilter = () => {
                       setIndex(product.srno);
                     }}
                   >
-                    <AiFillHeart
-                      className="btn btn-circle bg-transparent border-0 text-red-600 hover:bg-transparent hover:scale-125"
-                      onClick={handelFavourite}
-                    />
+                    <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                      <AiFillHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                      <AiFillHeart
+                        value={product.srno}
+                        onClick={handelDelete}
+                        className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                      />
+                    </div>
                   </div>
+                ) : (
+                  <div
+                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                    data-tip="Add To Favourite"
+                    onMouseEnter={() => {
+                      setfavouriteName(product.name);
+                      setfavouritePrice(product.price);
+                      setIndex(product.srno);
+                    }}
+                    onTouchStart={() => {
+                      setfavouriteName(product.name);
+                      setfavouritePrice(product.price);
+                      setIndex(product.srno);
+                    }}
+                  >
+                    <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                      <AiOutlineHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                      <AiOutlineHeart
+                        className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                        onClick={handelFavourite}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <figure>
+                  <img
+                    src={coffee}
+                    alt="coffee"
+                    className=" w-full md:w-[320px] h-52"
+                  />
+                </figure>
+                <div className="card-body flex flex-col justify-between items-center">
+                  <h2 className="card-title text-white h-10 ">
+                    {product.name}
+                  </h2>
+                  <div className="">
+                    Description: {truncate(product.description)}
+                  </div>
+                  <div className="w-full flex flex-col gap-2">
+                    <div className="card-actions flex">
+                      <div className="text-green-600 text-lg">
+                        Price: ₹ {product.price}
+                      </div>
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        id="input"
+                        placeholder="Enter Quantity"
+                        className=" grow rounded-lg pl-3 py-1 icon customInput"
+                        required
+                        onChange={(e) => {
+                          setQty(e.target.value);
+                        }}
+                        autoComplete="off"
+                      />
+                    </div>
+                    <button
+                      className="btn btn-primary w-full"
+                      value={product.name}
+                      onMouseEnter={() => setPrice(product.price)}
+                      onTouchStart={() => setPrice(product.price)}
+                      onClick={handelAddToCart}
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-wrap mt-10 justify-center items-center">
+          {data
+            ? data.map((product) => (
+                <div
+                  className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
+                  key={product.id}
+                >
+                  {hasItemInArray(favData, product.name) ? (
+                    <div
+                      className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                      data-tip="Remove From Favourite"
+                      onMouseEnter={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                      onTouchStart={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                    >
+                      <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                        <AiFillHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                        <AiFillHeart
+                          value={product.srno}
+                          onClick={handelDelete}
+                          className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                      data-tip="Add To Favourite"
+                      onMouseEnter={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                      onTouchStart={() => {
+                        setfavouriteName(product.name);
+                        setfavouritePrice(product.price);
+                        setIndex(product.srno);
+                      }}
+                    >
+                      <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                        <AiOutlineHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                        <AiOutlineHeart
+                          className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                          onClick={handelFavourite}
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <figure>
-                    <img src={coffee} alt="coffee" className="w-80 h-52" />
+                    <img
+                      src={coffee}
+                      alt="coffee"
+                      className=" w-full md:w-[320px] h-52"
+                    />
                   </figure>
                   <div className="card-body flex flex-col justify-between items-center">
                     <div>
