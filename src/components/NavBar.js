@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import db from "../firebase";
+import { toast } from "react-hot-toast";
 
 const NavBar = () => {
   const { user } = useContext(UserContext);
@@ -54,7 +55,7 @@ const NavBar = () => {
     try {
       await logout();
       navigate("/login");
-      alert(`${user?.displayName} has logged out`);
+      toast.success(`${user?.displayName} has logged out`);
     } catch (e) {
       console.error(e.message);
     }

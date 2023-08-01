@@ -17,6 +17,7 @@ import nosearch from "../images/nosearch.png";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { UserContext } from "../context/AuthContext";
 import hasItemInArray from "../utils/hasItemInArray";
+import { toast } from "react-hot-toast";
 
 const ProductFilter = () => {
   const { user } = useContext(UserContext);
@@ -134,6 +135,9 @@ const ProductFilter = () => {
       { merge: true }
     );
     setNo(no + 1);
+    toast(`${favouriteName} added to favourite`, {
+      icon: "🤤",
+    });
   };
 
   const handleSearch = (e) => {
@@ -150,7 +154,6 @@ const ProductFilter = () => {
       ) {
         itemList.push(item);
       }
-
       setSearchData(itemList);
     });
   };
@@ -159,6 +162,7 @@ const ProductFilter = () => {
     await updateDoc(docRef, {
       [`favourite.${index}`]: deleteField(),
     });
+    toast.success(`${favouriteName} removed from favourite`);
   };
 
   return (

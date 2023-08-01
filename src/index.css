@@ -2,45 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .scrollbar::-webkit-scrollbar {
-    width: 10px;
-    height: 20px;
-  }
+.scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 20px;
+}
 
-  .scrollbar::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: #f7f4ed;
-  }
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #f7f4ed;
+}
 
-  .scrollbar::-webkit-scrollbar-thumb {
-    background: #dc944c;
-    border-radius: 100vh;
-    border: 3px solid #f6f7ed;
-  }
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #dc944c;
+  border-radius: 100vh;
+  border: 3px solid #f6f7ed;
+}
 
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #dc944c;
-  }
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #dc944c;
+}
 
-  .radiocustom {
-    visibility: hidden;
-  }
+.radiocustom {
+  visibility: hidden;
+}
 
-  .labelcustom {
-    cursor: pointer;
-    border-radius: 4px;
-    border: 2px solid transparent;
-  }
+.labelcustom {
+  cursor: pointer;
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
 
-  .radiocustom:checked + .labelcustom {
-    border-color: white;
-  }
+.radiocustom:checked + .labelcustom {
+  border-color: white;
+}
 
-  .ratingcustom {
-    display: none;
-  }
-  .customInput {
-    outline: none;
-  }
+.ratingcustom {
+  display: none;
+}
+.customInput {
+  outline: none;
+}
+input {
+  outline: none;
+}
+
+.pincodeInput::-webkit-inner-spin-button,
+.pincodeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { UserContext } from "../context/AuthContext";
 
 const Login = () => {
-  const { signin, user } = UserAuth();
+  const { signin, user } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);

@@ -18,11 +18,12 @@ import db from "../firebase";
 import { BsInfoCircle, BsCreditCard2Back } from "react-icons/bs";
 import { CgGoogle } from "react-icons/cg";
 import { UserContext } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const Checkout = () => {
   const [data, setData] = useState();
   const [address, setAddress] = useState("");
-  const [newaddress, setNewAddress] = useState("");
+  const [newaddress, setNewAddress] = useState(address);
   const [paymentmethod, setPaymentMethod] = useState("");
   const [deliverymethod, setDeliveryMethod] = useState(false);
   const [area, setArea] = useState("");
@@ -70,6 +71,7 @@ const Checkout = () => {
       },
       { merge: true }
     );
+    toast.success("Address updated successfully");
     setAddress(newaddress);
   };
   const handelCheckout = async () => {
@@ -116,12 +118,14 @@ const Checkout = () => {
         },
         { merge: true }
       );
-
+      toast.success("Your order has been placed");
       setTimeout(() => {
         navigate("/");
       }, 1000);
     } else {
-      alert("select all the options");
+      if (!deliverymethod) toast.error("Select a valid dilivery method");
+      if (!paymentmethod) toast.error("Select a valid payment method");
+      if (!address) toast.error("Enter a delivery address");
       setIsPending(false);
     }
   };
@@ -266,7 +270,7 @@ const Checkout = () => {
             </label>
             <input
               type="text"
-              className="p-2 rounded-lg border-solid border-4 border-green-400"
+              className="p-2 rounded-lg border-solid border-4 border-green-400 text-black "
               id="email"
               value={user?.email}
               readOnly={true}
@@ -274,43 +278,43 @@ const Checkout = () => {
           </div>
           <div className="flex flex-col">
             <div className="text-gray-200 my-2">Delivery Address</div>
-            {address && (
-              <input
-                type="text"
-                className="p-2 rounded-lg border-solid border-4 border-green-400"
-                value={address}
-                readOnly={true}
-              />
-            )}
-            {!address && (
-              <input
-                type="text"
-                className="p-2 rounded-lg"
-                value={newaddress}
-                onChange={(e) => setNewAddress(e.target.value)}
-              />
-            )}
-            {!address && (
-              <label
-                className="btn btn-primary  mt-4"
-                htmlFor="addAddress-modal"
-                onClick={handleAddAddress}
-              >
-                Add Address&nbsp;
-                <FaHome />
-              </label>
-            )}
+
+            <input
+              type="text"
+              className="p-2 rounded-lg text-black "
+              value={newaddress ? newaddress : address}
+              onChange={(e) => setNewAddress(e.target.value)}
+            />
+
+            <label
+              className="btn btn-primary  mt-4"
+              htmlFor="addAddress-modal"
+              onClick={handleAddAddress}
+            >
+              {!address ? (
+                <>
+                  Add Address&nbsp;
+                  <FaHome />
+                </>
+              ) : (
+                <>
+                  Update Address&nbsp;
+                  <FaHome />
+                </>
+              )}
+            </label>
+
             <div className="flex flex-col  md:flex-row justify-between mt-4 gap-2">
               <input
                 type="text"
-                className="p-2 rounded-lg"
+                className="p-2 rounded-lg text-black"
                 placeholder="Area (Optional)"
                 value={area}
                 onChange={(e) => setArea(e.target.value)}
               />
               <input
                 type="number"
-                className="p-2 rounded-lg mt-4 md:mt-0"
+                className="p-2 rounded-lg mt-4 md:mt-0 text-black pincodeInput"
                 placeholder="Pincode (Optional)"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
