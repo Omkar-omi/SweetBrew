@@ -88,7 +88,7 @@ const Checkout = () => {
         deliverymethod: delivery,
         time: serverTimestamp(),
       });
-      if (extracharges == true) {
+      if (extracharges === true) {
         updateDoc(doc(db, "orders", docRef.id), {
           cartvalue: Number(cartvalue + (cartvalue / 100) * 18 + 40).toFixed(2),
         });

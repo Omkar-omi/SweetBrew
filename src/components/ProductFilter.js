@@ -21,6 +21,7 @@ import hasItemInArray from "../utils/hasItemInArray";
 import { toast } from "react-hot-toast";
 import SkeletonLoader from "./SkeletonLoader";
 import { Carousel } from "react-responsive-carousel";
+import Modal from "./modals/Modal";
 
 const ProductFilter = () => {
   const { user } = useContext(UserContext);
@@ -35,6 +36,8 @@ const ProductFilter = () => {
   const [favouritePrice, setfavouritePrice] = useState();
   const [favData, setFavData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState();
 
   useEffect(() => {
     getAllData();
@@ -240,7 +243,7 @@ const ProductFilter = () => {
               >
                 {hasItemInArray(favData, product.name) ? (
                   <div
-                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg z-50"
                     data-tip="Remove From Favourite"
                     onMouseEnter={() => {
                       setfavouriteName(product.name);
@@ -264,7 +267,7 @@ const ProductFilter = () => {
                   </div>
                 ) : (
                   <div
-                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                    className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg z-50"
                     data-tip="Add To Favourite"
                     onMouseEnter={() => {
                       setfavouriteName(product.name);
@@ -355,7 +358,7 @@ const ProductFilter = () => {
                     >
                       {hasItemInArray(favData, product.name) ? (
                         <div
-                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg z-50"
                           data-tip="Remove From Favourite"
                           onMouseEnter={() => {
                             setfavouriteName(product.name);
@@ -379,7 +382,7 @@ const ProductFilter = () => {
                         </div>
                       ) : (
                         <div
-                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg z-50"
                           data-tip="Add To Favourite"
                           onMouseEnter={() => {
                             setfavouriteName(product.name);
@@ -403,7 +406,7 @@ const ProductFilter = () => {
                       )}
                       <Carousel
                         showThumbs={false}
-                        autoPlay
+                        autoPlay={!openModal}
                         showArrows={false}
                         showIndicators={false}
                         showStatus={false}
@@ -433,8 +436,17 @@ const ProductFilter = () => {
                           <h2 className="card-title text-white h-10 ">
                             {product.name}
                           </h2>
-                          <div className="">
-                            Description: {truncate(product.description)}
+                          <div className="flex flex-col gap-2 ">
+                            Description: {truncate(product.description)}{" "}
+                            <div
+                              className="text-blue-400 underline text-[12px] cursor-pointer"
+                              onClick={() => {
+                                setOpenModal(true);
+                                setSelectedProduct(product);
+                              }}
+                            >
+                              Know more.
+                            </div>
                           </div>
                         </div>
                         <div className="w-full flex flex-col gap-2">
@@ -474,6 +486,51 @@ const ProductFilter = () => {
           )}
         </>
       )}
+      <Modal openModal={openModal} setOpenModal={setOpenModal}>
+        <div className="relative card shadow-xl mb-5 mx-2 group rounded-none">
+          <Carousel
+            showThumbs={false}
+            autoPlay
+            showArrows={false}
+            showIndicators={false}
+            showStatus={false}
+            infiniteLoop
+            interval={5000}
+            stopOnHover
+            emulateTouch
+          >
+            <img src={coffee} alt="coffee" className="h-52" />
+            <img src={coffee} alt="coffee" className="h-52" />
+            <img src={coffee} alt="coffee" className="h-52" />
+          </Carousel>
+          <div className="card-body flex flex-col justify-between items-center overflow-y-auto  custom-scrollbar p-5">
+            <div>
+              <h2 className="card-title text-white h-10 ">
+                {selectedProduct?.name}
+              </h2>
+              <div className="flex flex-col gap-2 ">
+                Description: {selectedProduct?.description}
+              </div>
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <div className="card-actions flex">
+                <div className="text-green-600 text-lg">
+                  Price: ₹ {selectedProduct?.price}
+                </div>
+              </div>
+              <button
+                className="btn btn-primary w-full"
+                value={selectedProduct?.name}
+                onMouseEnter={() => setPrice(selectedProduct?.price)}
+                onTouchStart={() => setPrice(selectedProduct?.price)}
+                onClick={handelAddToCart}
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

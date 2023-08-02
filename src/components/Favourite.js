@@ -45,7 +45,7 @@ const Favourite = () => {
       [`favourite.${srno}`]: deleteField(),
     });
   };
-  if (data && Object.values(data[0].favourite).length == 0) {
+  if (data && Object.values(data[0].favourite).length === 0) {
     return (
       <>
         <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">

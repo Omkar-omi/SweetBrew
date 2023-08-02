@@ -87,3 +87,18 @@ input {
     transform: translateX(100%);
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  background-color: transparent;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(231, 151, 72);
+}

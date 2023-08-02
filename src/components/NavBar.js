@@ -182,7 +182,7 @@ const NavBar = () => {
                             </div>
                           ))
                         : null}
-                      {!Object.keys(product.cart).length == 0 && <hr />}
+                      {!Object.keys(product.cart).length === 0 && <hr />}
                       <div className="card-actions">
                         {isPending && (
                           <button className="content-center btn btn-primary grow loading">
@@ -190,7 +190,7 @@ const NavBar = () => {
                           </button>
                         )}
                         {!isPending &&
-                          !Object.keys(product.cart).length == 0 && (
+                          !Object.keys(product.cart).length === 0 && (
                             <button
                               className="btn btn-primary btn-block"
                               onClick={handelCheckout}

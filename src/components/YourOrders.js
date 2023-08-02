@@ -99,7 +99,7 @@ const YourOrders = () => {
                       </div>
                     ))
                   : null}
-                {(product.review == "" || product.rating == null) && (
+                {(product.review === "" || product.rating === null) && (
                   <div
                     className="flex items-center justify-end mt-2"
                     value={index}
