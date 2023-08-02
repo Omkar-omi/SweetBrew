@@ -14,6 +14,7 @@ import db from "../firebase";
 import { useNavigate } from "react-router-dom";
 import empty from "../images/empty.png";
 import { UserContext } from "../context/AuthContext";
+import { MdDeleteOutline } from "react-icons/md";
 
 const CurrentOrder = () => {
   const { user } = useContext(UserContext);
@@ -41,10 +42,10 @@ const CurrentOrder = () => {
     });
   };
 
-  const handelDelete = async (e) => {
+  const handelDelete = async (price, srno) => {
     const docRef = doc(db, "users", user?.uid);
-    const srno = e.target.value;
-    const price = e.target.getAttribute("data-price");
+    // const srno = e.target.value;
+    // const price = e.target.getAttribute("data-price");
 
     await updateDoc(docRef, {
       [`cart.${srno}`]: deleteField(),
@@ -61,45 +62,47 @@ const CurrentOrder = () => {
 
   if (data && Object.values(data[0]?.cart).length === 0) {
     return (
-      <div className="sm:block hidden bg-neutral p-10 min-w-[384px] mt-10">
-        <div className="text-2xl text-gray-400 font-semibold mb-7">
-          Current Order
-        </div>
-        <div className="flex flex-col ">
-          <div className="h-96 border-solid border-b-2 border-primary scrollbar">
-            {/* outer div */}
-            <div className="flex flex-col justify-center items-center h-full">
-              <img
-                src={empty}
-                className="h-20 w-20 rounded-xl "
-                alt="empty cart"
-              />
-              <div className="font-[600]">Empty cart</div>
-              <div className="font-[600]">Add Items to your cart</div>
-            </div>
+      <div className="relative sm:block hidden bg-neutral p-10 min-w-[384px] mt-10">
+        <div className="sticky top-20">
+          <div className="text-2xl text-gray-400 font-semibold mb-7">
+            Current Order
           </div>
-          <div className="mt-11">
-            <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
-              <div className="">
-                <div>Subtotal:</div>
-                <div>CGST 9%:</div>
-                <div>SGST 9%:</div>
-              </div>
-              <hr />
-              <div className="">
-                <div>₹ 0</div>
-                <div>₹ 0</div>
-                <div>₹ 0</div>
+          <div className="flex flex-col ">
+            <div className="h-96 border-solid border-b-2 border-primary scrollbar">
+              {/* outer div */}
+              <div className="flex flex-col justify-center items-center h-full">
+                <img
+                  src={empty}
+                  className="h-20 w-20 rounded-xl "
+                  alt="empty cart"
+                />
+                <div className="font-[600]">Empty cart</div>
+                <div className="font-[600]">Add Items to your cart</div>
               </div>
             </div>
-            <div className="flex flex-row justify-between my-5">
-              <div className="font-medium text-xl">Total:</div>
-              <div>₹ 0</div>
-            </div>
-            <div className="flex">
-              <button className="btn btn-primary grow" disabled>
-                Check Out
-              </button>
+            <div className="mt-11">
+              <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
+                <div className="">
+                  <div>Subtotal:</div>
+                  <div>CGST 9%:</div>
+                  <div>SGST 9%:</div>
+                </div>
+                <hr />
+                <div className="">
+                  <div>₹ 0</div>
+                  <div>₹ 0</div>
+                  <div>₹ 0</div>
+                </div>
+              </div>
+              <div className="flex flex-row justify-between my-5">
+                <div className="font-medium text-xl">Total:</div>
+                <div>₹ 0</div>
+              </div>
+              <div className="flex">
+                <button className="btn btn-primary grow" disabled>
+                  Check Out
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -107,139 +110,145 @@ const CurrentOrder = () => {
     );
   } else {
     return (
-      <div className="sm:block hidden bg-neutral p-10 min-w-[384px] mt-10 ">
-        <div className="text-2xl text-gray-400 font-semibold mb-7">
-          Current Order
-        </div>
-        <div className="flex flex-col ">
-          <div className="overflow-y-scroll scroll-m-4 snap-start h-96 border-solid border-b-2 border-primary scrollbar">
-            {/* outer div */}
-            {data
-              ? data.length > 0
-                ? Object.values(data[0].cart).map((product) => (
-                    <div className="flex flex-row mb-5" key={product.srno}>
-                      <img
-                        src={coffee}
-                        className="h-20 w-20 rounded-xl"
-                        alt="coffee"
-                      />
-                      <div className="mx-4 flex flex-col grow">
-                        <div className="flex items-baseline justify-between">
-                          <div className="font-medium text-white">
-                            {product.product}
-                          </div>
-                          <button
-                            onClick={handelDelete}
-                            value={product.srno}
-                            data-price={product.price}
-                          >
-                            x
-                          </button>
-                        </div>
-                        <div className="flex flex-row  mt-5 items-center justify-between">
-                          <div className="flex items-center">
-                            <div
-                              className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
-                              onClick={async () => {
-                                const docRef = doc(db, "users", user?.uid);
-
-                                await updateDoc(docRef, {
-                                  [`cart.${product.srno}.quantity`]:
-                                    Number(product.quantity) + 1,
-                                  [`cart.${product.srno}.price`]:
-                                    product.price + product.actual_price,
-                                  cartvalue: increment(product.actual_price),
-                                });
-                              }}
-                            >
-                              <div className="mx-3 mb-1">+</div>
+      <div className="relative sm:block hidden bg-neutral p-10 min-w-[384px] mt-10 ">
+        <div className="sticky top-20">
+          <div className="text-2xl text-gray-400 font-semibold mb-7">
+            Current Order
+          </div>
+          <div className="flex flex-col ">
+            <div className="overflow-y-auto scroll-m-4 snap-start h-96 border-solid border-b-2 border-primary scrollbar">
+              {/* outer div */}
+              {data
+                ? data.length > 0
+                  ? Object.values(data[0].cart).map((product) => (
+                      <div className="flex flex-row mb-5" key={product.srno}>
+                        <img
+                          src={coffee}
+                          className="h-20 w-20 rounded-xl"
+                          alt="coffee"
+                        />
+                        <div className="mx-4 flex flex-col grow">
+                          <div className="flex items-baseline justify-between">
+                            <div className="font-medium text-white">
+                              {product.product}
                             </div>
-                            <div className="text-warning mx-3">{`${product.quantity} x`}</div>
-                            <div
-                              className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
-                              onClick={async (e) => {
-                                const docRef = doc(db, "users", user?.uid);
-                                // console.log(product.quantity);
-                                if (product.quantity <= 1) {
-                                  await updateDoc(docRef, {
-                                    [`cart.${product.srno}`]: deleteField(),
-                                    cartvalue: increment(-product.actual_price),
-                                  });
-                                } else {
+
+                            <MdDeleteOutline
+                              className="hover:text-red-500 hover:scale-110"
+                              onClick={() =>
+                                handelDelete(product.price, product.srno)
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-row  mt-5 items-center justify-between">
+                            <div className="flex items-center">
+                              <div
+                                className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
+                                onClick={async () => {
+                                  const docRef = doc(db, "users", user?.uid);
+
                                   await updateDoc(docRef, {
                                     [`cart.${product.srno}.quantity`]:
-                                      Number(product.quantity) - 1,
+                                      Number(product.quantity) + 1,
                                     [`cart.${product.srno}.price`]:
-                                      product.price - product.actual_price,
-
-                                    cartvalue: increment(-product.actual_price),
+                                      product.price + product.actual_price,
+                                    cartvalue: increment(product.actual_price),
                                   });
-                                }
-                              }}
-                            >
-                              <div className="mx-3 mb-1">-</div>
+                                }}
+                              >
+                                <div className="mx-3 mb-1">+</div>
+                              </div>
+                              <div className="text-warning mx-3">{`${product.quantity} x`}</div>
+                              <div
+                                className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
+                                onClick={async (e) => {
+                                  const docRef = doc(db, "users", user?.uid);
+                                  // console.log(product.quantity);
+                                  if (product.quantity <= 1) {
+                                    await updateDoc(docRef, {
+                                      [`cart.${product.srno}`]: deleteField(),
+                                      cartvalue: increment(
+                                        -product.actual_price
+                                      ),
+                                    });
+                                  } else {
+                                    await updateDoc(docRef, {
+                                      [`cart.${product.srno}.quantity`]:
+                                        Number(product.quantity) - 1,
+                                      [`cart.${product.srno}.price`]:
+                                        product.price - product.actual_price,
+
+                                      cartvalue: increment(
+                                        -product.actual_price
+                                      ),
+                                    });
+                                  }
+                                }}
+                              >
+                                <div className="mx-3 mb-1">-</div>
+                              </div>
                             </div>
+                            <div>{`₹ ${product.price}`}</div>
                           </div>
-                          <div>{`₹ ${product.price}`}</div>
                         </div>
                       </div>
-                    </div>
-                  ))
-                : null
-              : null}
-          </div>
-          <div className="mt-11">
-            <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
-              <div className="">
-                <div>Subtotal:</div>
-                <div>CGST 9%:</div>
-                <div>SGST 9%:</div>
+                    ))
+                  : null
+                : null}
+            </div>
+            <div className="mt-11">
+              <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
+                <div className="">
+                  <div>Subtotal:</div>
+                  <div>CGST 9%:</div>
+                  <div>SGST 9%:</div>
+                </div>
+                <hr />
+                <div>
+                  {data
+                    ? data.map((product) => (
+                        <div key={0}>
+                          <div>{`₹ ${product.cartvalue}.0`}</div>
+                          <div>
+                            ₹ {Number((product.cartvalue / 100) * 9).toFixed(2)}
+                          </div>
+                          <div>
+                            ₹ {Number((product.cartvalue / 100) * 9).toFixed(2)}
+                          </div>
+                        </div>
+                      ))
+                    : null}
+                </div>
               </div>
-              <hr />
-              <div>
+              <div className="flex flex-row justify-between my-5">
+                <div className="font-medium text-xl">Total:</div>
                 {data
                   ? data.map((product) => (
-                      <div key={0}>
-                        <div>{`₹ ${product.cartvalue}.0`}</div>
-                        <div>
-                          ₹ {Number((product.cartvalue / 100) * 9).toFixed(2)}
-                        </div>
-                        <div>
-                          ₹ {Number((product.cartvalue / 100) * 9).toFixed(2)}
-                        </div>
+                      <div key={1}>
+                        ₹{" "}
+                        {Number(
+                          product.cartvalue + (product.cartvalue / 100) * 18
+                        ).toFixed(2)}
                       </div>
                     ))
                   : null}
               </div>
-            </div>
-            <div className="flex flex-row justify-between my-5">
-              <div className="font-medium text-xl">Total:</div>
-              {data
-                ? data.map((product) => (
-                    <div key={1}>
-                      ₹{" "}
-                      {Number(
-                        product.cartvalue + (product.cartvalue / 100) * 18
-                      ).toFixed(2)}
-                    </div>
-                  ))
-                : null}
-            </div>
-            <div className="flex">
-              {isPending && (
-                <button className="content-center btn btn-primary grow loading">
-                  Checking Out...
-                </button>
-              )}
-              {!isPending && (
-                <button
-                  className="content-center btn btn-primary grow"
-                  onClick={handelCheckout}
-                >
-                  {" "}
-                  Check Out
-                </button>
-              )}
+              <div className="flex">
+                {isPending && (
+                  <button className="content-center btn btn-primary grow loading">
+                    Checking Out...
+                  </button>
+                )}
+                {!isPending && (
+                  <button
+                    className="content-center btn btn-primary grow"
+                    onClick={handelCheckout}
+                  >
+                    {" "}
+                    Check Out
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
