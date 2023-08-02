@@ -51,3 +51,39 @@ input {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.skeleton-loader {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    #2f2f2f -24.18%,
+    #171717 50.26%,
+    #222222 114.82%,
+    #000000 114.84%
+  );
+}
+.skeleton-loader::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    #ffffff6c -24.18%,
+    #ffffff95 50.26%,
+    #ffffff4d 114.82%,
+    #ffffff0e 114.84%
+  );
+  filter: blur(10px);
+  animation: shimmer 2s infinite;
+  content: "";
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

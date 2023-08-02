@@ -18,6 +18,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { UserContext } from "../context/AuthContext";
 import hasItemInArray from "../utils/hasItemInArray";
 import { toast } from "react-hot-toast";
+import SkeletonLoader from "./SkeletonLoader";
 
 const ProductFilter = () => {
   const { user } = useContext(UserContext);
@@ -31,6 +32,7 @@ const ProductFilter = () => {
   const [favouriteName, setfavouriteName] = useState();
   const [favouritePrice, setfavouritePrice] = useState();
   const [favData, setFavData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getAllData();
@@ -54,6 +56,7 @@ const ProductFilter = () => {
   };
 
   const getAllData = async () => {
+    setIsLoading(true);
     const alldata = [];
 
     const querySnapshotcoffee = await getDocs(collection(db, "coffee"));
@@ -72,6 +75,7 @@ const ProductFilter = () => {
     });
 
     setData(alldata);
+    setIsLoading(false);
   };
 
   const getCoffeType = async (type) => {
@@ -227,7 +231,7 @@ const ProductFilter = () => {
               </div>
             </div>
           ) : (
-            searchdata.map((product, index) => (
+            searchdata.map((product) => (
               <div
                 className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
                 key={product.id}
@@ -289,11 +293,13 @@ const ProductFilter = () => {
                   />
                 </figure>
                 <div className="card-body flex flex-col justify-between items-center">
-                  <h2 className="card-title text-white h-10 ">
-                    {product.name}
-                  </h2>
-                  <div className="">
-                    Description: {truncate(product.description)}
+                  <div>
+                    <h2 className="card-title text-white h-10 ">
+                      {product.name}
+                    </h2>
+                    <div className="">
+                      Description: {truncate(product.description)}
+                    </div>
                   </div>
                   <div className="w-full flex flex-col gap-2">
                     <div className="card-actions flex">
@@ -330,112 +336,122 @@ const ProductFilter = () => {
           )}
         </div>
       ) : (
-        <div className="flex flex-wrap mt-10 justify-center items-center">
-          {data
-            ? data.map((product) => (
-                <div
-                  className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
-                  key={product.id}
-                >
-                  {hasItemInArray(favData, product.name) ? (
+        <>
+          {isLoading ? (
+            <div className="flex flex-wrap justify-center gap-2 md:mx-0  mx-[10px]  mt-[15px]">
+              {[...Array(8)].map((i) => (
+                <SkeletonLoader key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap mt-10 justify-center items-center">
+              {data
+                ? data.map((product) => (
                     <div
-                      className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
-                      data-tip="Remove From Favourite"
-                      onMouseEnter={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
-                      onTouchStart={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
+                      className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
+                      key={product.id}
                     >
-                      <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
-                        <AiFillHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
-                        <AiFillHeart
-                          value={product.srno}
-                          onClick={handelDelete}
-                          className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
-                      data-tip="Add To Favourite"
-                      onMouseEnter={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
-                      onTouchStart={() => {
-                        setfavouriteName(product.name);
-                        setfavouritePrice(product.price);
-                        setIndex(product.srno);
-                      }}
-                    >
-                      <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
-                        <AiOutlineHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
-                        <AiOutlineHeart
-                          className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
-                          onClick={handelFavourite}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <figure>
-                    <img
-                      src={coffee}
-                      alt="coffee"
-                      className=" w-full md:w-[320px] h-52"
-                    />
-                  </figure>
-                  <div className="card-body flex flex-col justify-between items-center">
-                    <div>
-                      <h2 className="card-title text-white h-10 ">
-                        {product.name}
-                      </h2>
-                      <div className="">
-                        Description: {truncate(product.description)}
-                      </div>
-                    </div>
-                    <div className="w-full flex flex-col gap-2">
-                      <div className="card-actions flex">
-                        <div className="text-green-600 text-lg">
-                          Price: ₹ {product.price}
-                        </div>
-                        <input
-                          type="number"
-                          min={0}
-                          max={100}
-                          id="input"
-                          placeholder="Enter Quantity"
-                          className=" grow rounded-lg pl-3 py-1 icon customInput"
-                          required
-                          onChange={(e) => {
-                            setQty(e.target.value);
+                      {hasItemInArray(favData, product.name) ? (
+                        <div
+                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                          data-tip="Remove From Favourite"
+                          onMouseEnter={() => {
+                            setfavouriteName(product.name);
+                            setfavouritePrice(product.price);
+                            setIndex(product.srno);
                           }}
-                          autoComplete="off"
+                          onTouchStart={() => {
+                            setfavouriteName(product.name);
+                            setfavouritePrice(product.price);
+                            setIndex(product.srno);
+                          }}
+                        >
+                          <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                            <AiFillHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                            <AiFillHeart
+                              value={product.srno}
+                              onClick={handelDelete}
+                              className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="absolute  h-10 w-10  top-2 right-2 tooltip tooltip-left rounded-lg"
+                          data-tip="Add To Favourite"
+                          onMouseEnter={() => {
+                            setfavouriteName(product.name);
+                            setfavouritePrice(product.price);
+                            setIndex(product.srno);
+                          }}
+                          onTouchStart={() => {
+                            setfavouriteName(product.name);
+                            setfavouritePrice(product.price);
+                            setIndex(product.srno);
+                          }}
+                        >
+                          <div className="group/heart relative  h-10 w-10 flex justify-center items-center">
+                            <AiOutlineHeart className="absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping" />
+                            <AiOutlineHeart
+                              className="absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10"
+                              onClick={handelFavourite}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <figure>
+                        <img
+                          src={coffee}
+                          alt="coffee"
+                          className=" w-full md:w-[320px] h-52"
                         />
+                      </figure>
+                      <div className="card-body flex flex-col justify-between items-center">
+                        <div>
+                          <h2 className="card-title text-white h-10 ">
+                            {product.name}
+                          </h2>
+                          <div className="">
+                            Description: {truncate(product.description)}
+                          </div>
+                        </div>
+                        <div className="w-full flex flex-col gap-2">
+                          <div className="card-actions flex">
+                            <div className="text-green-600 text-lg">
+                              Price: ₹ {product.price}
+                            </div>
+                            <input
+                              type="number"
+                              min={0}
+                              max={100}
+                              id="input"
+                              placeholder="Enter Quantity"
+                              className=" grow rounded-lg pl-3 py-1 icon customInput"
+                              required
+                              onChange={(e) => {
+                                setQty(e.target.value);
+                              }}
+                              autoComplete="off"
+                            />
+                          </div>
+                          <button
+                            className="btn btn-primary w-full"
+                            value={product.name}
+                            onMouseEnter={() => setPrice(product.price)}
+                            onTouchStart={() => setPrice(product.price)}
+                            onClick={handelAddToCart}
+                          >
+                            Add to cart
+                          </button>
+                        </div>
                       </div>
-                      <button
-                        className="btn btn-primary w-full"
-                        value={product.name}
-                        onMouseEnter={() => setPrice(product.price)}
-                        onTouchStart={() => setPrice(product.price)}
-                        onClick={handelAddToCart}
-                      >
-                        Add to cart
-                      </button>
                     </div>
-                  </div>
-                </div>
-              ))
-            : null}
-        </div>
+                  ))
+                : null}
+            </div>
+          )}
+        </>
       )}
     </>
   );
