@@ -1,3 +1,4 @@
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
   collection,
   deleteField,
@@ -19,6 +20,7 @@ import { UserContext } from "../context/AuthContext";
 import hasItemInArray from "../utils/hasItemInArray";
 import { toast } from "react-hot-toast";
 import SkeletonLoader from "./SkeletonLoader";
+import { Carousel } from "react-responsive-carousel";
 
 const ProductFilter = () => {
   const { user } = useContext(UserContext);
@@ -399,14 +401,33 @@ const ProductFilter = () => {
                           </div>
                         </div>
                       )}
-
-                      <figure>
+                      <Carousel
+                        showThumbs={false}
+                        autoPlay
+                        showArrows={false}
+                        showIndicators={false}
+                        showStatus={false}
+                        infiniteLoop
+                        interval={5000}
+                        stopOnHover
+                        emulateTouch
+                      >
                         <img
                           src={coffee}
                           alt="coffee"
                           className=" w-full md:w-[320px] h-52"
                         />
-                      </figure>
+                        <img
+                          src={coffee}
+                          alt="coffee"
+                          className=" w-full md:w-[320px] h-52"
+                        />
+                        <img
+                          src={coffee}
+                          alt="coffee"
+                          className=" w-full md:w-[320px] h-52"
+                        />
+                      </Carousel>
                       <div className="card-body flex flex-col justify-between items-center">
                         <div>
                           <h2 className="card-title text-white h-10 ">

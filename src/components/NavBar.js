@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import db from "../firebase";
 import { toast } from "react-hot-toast";
+import { MdDeleteOutline } from "react-icons/md";
 
 const NavBar = () => {
   const { user } = useContext(UserContext);
@@ -39,10 +40,8 @@ const NavBar = () => {
       );
     });
   };
-  const handelDelete = async (e) => {
+  const handelDelete = async (price, srno) => {
     const docRef = doc(db, "users", user?.uid);
-    const srno = e.target.value;
-    const price = e.target.getAttribute("data-price");
     await updateDoc(docRef, {
       [`cart.${srno}`]: deleteField(),
       cartvalue: increment(-price),
@@ -112,13 +111,12 @@ const NavBar = () => {
                                 <div className="font-medium text-white text-lg">
                                   {product.product}
                                 </div>
-                                <button
-                                  onClick={handelDelete}
-                                  value={product.srno}
-                                  data-price={product.price}
-                                >
-                                  X
-                                </button>
+                                <MdDeleteOutline
+                                  className="hover:text-red-500 hover:scale-110"
+                                  onClick={() =>
+                                    handelDelete(product.price, product.srno)
+                                  }
+                                />
                               </div>
                               <div className="flex flex-row   items-center justify-between">
                                 <div className="flex items-center">
