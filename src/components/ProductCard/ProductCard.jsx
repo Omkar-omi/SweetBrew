@@ -66,10 +66,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <>
-      <div
-        className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group"
-        key={product.id}
-      >
+      <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group">
         <FavIconStatus favData={favData} product={product} />
         <Carousel
           showThumbs={false}
@@ -85,17 +82,17 @@ const ProductCard = ({ product }) => {
           <img
             src={coffee}
             alt="coffee"
-            className=" w-full md:w-[320px] h-52"
+            className=" w-full md:w-[320px] aspect-video"
           />
           <img
             src={coffee}
             alt="coffee"
-            className=" w-full md:w-[320px] h-52"
+            className=" w-full md:w-[320px] aspect-video"
           />
           <img
             src={coffee}
             alt="coffee"
-            className=" w-full md:w-[320px] h-52"
+            className=" w-full md:w-[320px] aspect-video"
           />
         </Carousel>
         <div className="card-body flex flex-col justify-between items-center">

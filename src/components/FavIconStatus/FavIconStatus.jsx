@@ -40,7 +40,7 @@ const FavIconStatus = ({ favData, product }) => {
 
   const styles = {
     containerStyle:
-      "absolute h-10 w-10 top-2 right-2 tooltip tooltip-left rounded-lg z-50",
+      "absolute h-10 w-10 top-2 right-2 tooltip tooltip-left rounded-lg z-10",
     innerContainerStyle:
       "group/heart relative h-10 w-10 flex justify-center items-center",
     animatedHeartStyle:

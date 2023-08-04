@@ -17,9 +17,21 @@ const ProductInfoModal = ({ openModal, setOpenModal, selectedProduct }) => {
           stopOnHover
           emulateTouch
         >
-          <img src={coffee} alt="coffee" className="h-52" />
-          <img src={coffee} alt="coffee" className="h-52" />
-          <img src={coffee} alt="coffee" className="h-52" />
+          <img
+            src={coffee}
+            alt="coffee"
+            className=" w-full md:w-[320px] aspect-video"
+          />
+          <img
+            src={coffee}
+            alt="coffee"
+            className=" w-full md:w-[320px] aspect-video"
+          />
+          <img
+            src={coffee}
+            alt="coffee"
+            className=" w-full md:w-[320px] aspect-video"
+          />
         </Carousel>
         <div className="card-body flex flex-col justify-between items-center overflow-y-auto  custom-scrollbar p-5">
           <div>

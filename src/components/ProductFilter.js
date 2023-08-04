@@ -129,22 +129,24 @@ const ProductFilter = () => {
               </div>
             </div>
           ) : (
-            searchdata.map((product) => <ProductCard product={product} />)
+            searchdata.map((product) => (
+              <ProductCard product={product} key={product.id} />
+            ))
           )}
         </div>
       ) : (
         <>
           {isLoading ? (
             <div className="flex flex-wrap justify-center gap-2 md:mx-0  mx-[10px]  mt-[15px]">
-              {[...Array(8)].map((i) => (
-                <SkeletonLoader key={i} />
+              {[...Array(8)].map((_, index) => (
+                <SkeletonLoader key={index} />
               ))}
             </div>
           ) : (
             <div className="flex flex-wrap mt-10 justify-center items-center">
               {allProducts
                 ? allProducts.map((product) => (
-                    <ProductCard product={product} />
+                    <ProductCard product={product} key={product.id} />
                   ))
                 : null}
             </div>

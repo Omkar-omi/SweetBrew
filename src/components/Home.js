@@ -1,5 +1,5 @@
 import CurrentOrder from "./Currentorder";
-import NavBar from "./NavBar";
+import NavBar from "../commons/Navbar/NavBar";
 import ProductFilter from "./ProductFilter";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
