@@ -68,7 +68,7 @@ const CurrentOrder = () => {
             Current Order
           </div>
           <div className="flex flex-col ">
-            <div className="h-96 border-solid border-b-2 border-primary scrollbar">
+            <div className="h-[350px] border-solid border-b-2 border-primary scrollbar">
               {/* outer div */}
               <div className="flex flex-col justify-center items-center h-full">
                 <img
@@ -99,7 +99,10 @@ const CurrentOrder = () => {
                 <div>₹ 0</div>
               </div>
               <div className="flex">
-                <button className="btn btn-primary grow" disabled>
+                <button
+                  className="p-4 rounded-md border grow border-primary/20 bg-black/50 cursor-not-allowed"
+                  disabled
+                >
                   Check Out
                 </button>
               </div>
@@ -116,7 +119,7 @@ const CurrentOrder = () => {
             Current Order
           </div>
           <div className="flex flex-col ">
-            <div className="overflow-y-auto scroll-m-4 snap-start h-96 border-solid border-b-2 border-primary scrollbar">
+            <div className="overflow-y-auto scroll-m-4 snap-start h-[350px] border-solid border-b-2 border-primary scrollbar">
               {/* outer div */}
               {data
                 ? data.length > 0

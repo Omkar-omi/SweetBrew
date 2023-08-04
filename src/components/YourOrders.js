@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import db from "../firebase";
 
 import { BsChevronRight } from "react-icons/bs";
-import Star from "./Star";
+import Star from "../commons/Star";
 import { UserContext } from "../context/AuthContext";
 
 const YourOrders = () => {
