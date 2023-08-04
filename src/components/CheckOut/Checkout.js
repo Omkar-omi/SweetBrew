@@ -13,11 +13,11 @@ import {
   where,
 } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
-import coffee from "../images/Coffee.jpg";
-import db from "../firebase";
+import coffee from "../../images/Coffee.jpg";
+import db from "../../firebase";
 import { BsInfoCircle, BsCreditCard2Back } from "react-icons/bs";
 import { CgGoogle } from "react-icons/cg";
-import { UserContext } from "../context/AuthContext";
+import { UserContext } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
 
 const Checkout = () => {

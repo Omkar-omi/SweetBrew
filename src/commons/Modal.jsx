@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { blurTransition, viewPort } from "../../constants/animations";
+import { blurTransition, viewPort } from "../constants/animations";
 import { MdClose } from "react-icons/md";
 
 const Modal = ({

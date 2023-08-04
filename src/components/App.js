@@ -5,7 +5,7 @@ import Login from "./Login";
 import Home from "./Home";
 import SignUp from "./SignUp";
 import Profile from "./Profile";
-import Checkout from "./Checkout";
+import Checkout from "./CheckOut/Checkout";
 import YourOrders from "./YourOrders";
 import Favourite from "./Favourite";
 import { Toaster } from "react-hot-toast";
