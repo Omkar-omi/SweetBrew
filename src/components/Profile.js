@@ -11,24 +11,30 @@ import { useEffect } from "react";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import db from "../firebase";
 import { UserContext } from "../context/AuthContext";
+import ChangeAddressModal from "../components/modals/ChangeAddressModal";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState({
+    flatno: "",
+    area: "",
+    landmark: "",
+  });
+
   const [isPending, setIsPending] = useState(false);
   const [editname, setEditName] = useState("");
-  const [editaddress, setEditAddress] = useState("");
   const [oldpass, setOldPass] = useState("");
   const [newpass, setNewPass] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const getData = async () => {
@@ -38,16 +44,6 @@ const Profile = () => {
       setAddress(doc.data().address);
     });
   };
-  const handleAddAddress = () => {
-    const docRef = doc(db, "users", user?.uid);
-    setDoc(
-      docRef,
-      {
-        address: address,
-      },
-      { merge: true }
-    );
-  };
 
   const handelEditName = () => {
     const docRef = doc(db, "users", user?.uid);
@@ -55,13 +51,6 @@ const Profile = () => {
       name: editname,
     });
     setEditName("");
-  };
-  const handelEditAddress = () => {
-    const docRef = doc(db, "users", user?.uid);
-    updateDoc(docRef, {
-      address: editaddress,
-    });
-    setEditAddress("");
   };
 
   const handelSaveChanges = async (e) => {
@@ -142,26 +131,39 @@ const Profile = () => {
               Email can't be changed*
             </div>
           </div>
-          {!address && (
-            <label className="btn btn-primary mt-5" htmlFor="addAddress-modal">
+
+          {address.area === "" || address.flatno === "" ? (
+            <div
+              onClick={() => setOpenModal(true)}
+              className="btn btn-primary mt-5"
+            >
               Add Address&nbsp;
               <FaHome />
-            </label>
-          )}
-          {address && <label className="text-white mb-2">Address :</label>}
-          {address && (
-            <div className="flex gap-3">
-              <input
-                className="p-2 rounded-lg text-black w-64 md:w-[450px] "
-                type="text"
-                required
-                value={address}
-                readOnly={true}
-              />
-              <label className="btn bg-neutral" htmlFor="address-modal">
-                <MdModeEdit className="w-5 h-5" />
-              </label>
             </div>
+          ) : (
+            <>
+              <label className="text-white mb-2">Address :</label>
+              <div className="flex gap-3">
+                <input
+                  className="p-2 rounded-lg text-black w-64 md:w-[450px] "
+                  type="text"
+                  required
+                  value={
+                    address &&
+                    `${address && address?.flatno?.trim()}, ${
+                      address && address?.area?.trim()
+                    }, ${address && address?.landmark?.trim()} `
+                  }
+                  readOnly
+                />
+                <div
+                  onClick={() => setOpenModal(true)}
+                  className="btn bg-neutral"
+                >
+                  <MdModeEdit className="w-5 h-5" />
+                </div>
+              </div>
+            </>
           )}
           <label className="btn btn-primary mt-5" htmlFor="pass-modal">
             <MdModeEdit className="w-5 h-5" />
@@ -180,35 +182,6 @@ const Profile = () => {
         </form>
       </main>
 
-      {/* Modals */}
-      <input type="checkbox" id="addAddress-modal" className="modal-toggle" />
-      <div className="modal modal-middle">
-        <div className="modal-box">
-          <label
-            htmlFor="addAddress-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="font-bold text-lg">Add Address</h3>
-          <label className="text-white mb-2">Address :</label>
-          <div className="flex gap-3">
-            <textarea
-              className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 "
-              type="email"
-              required
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-          <label
-            htmlFor="addAddress-modal"
-            className="btn my-3 btn-primary"
-            onClick={handleAddAddress}
-          >
-            Save
-          </label>
-        </div>
-      </div>
       {/* Name modals */}
       <input type="checkbox" id="name-modal" className="modal-toggle" />
       <div className="modal modal-middle">
@@ -237,34 +210,14 @@ const Profile = () => {
           </label>
         </div>
       </div>
-      {/* address modals */}
-      <input type="checkbox" id="address-modal" className="modal-toggle" />
-      <div className="modal modal-middle">
-        <div className="modal-box">
-          <label
-            htmlFor="address-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="font-bold text-lg">Edit Address</h3>
-          <label className="text-white mb-2">Address :</label>
-          <input
-            className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3"
-            type="text"
-            value={editaddress}
-            required
-            onChange={(e) => setEditAddress(e.target.value)}
-          />
-          <label
-            htmlFor="address-modal"
-            className="btn btn-primary"
-            onClick={handelEditAddress}
-          >
-            Save
-          </label>
-        </div>
-      </div>
+      {address && (
+        <ChangeAddressModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          address={address}
+          setAddress={setAddress}
+        />
+      )}
       {/* Pass change modal */}
       <input type="checkbox" id="pass-modal" className="modal-toggle" />
       <div className="modal modal-middle">

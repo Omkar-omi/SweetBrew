@@ -19,7 +19,7 @@ const Favourite = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const getData = async () => {

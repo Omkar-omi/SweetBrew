@@ -23,7 +23,7 @@ const CurrentOrder = () => {
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const [data, setData] = useState();
@@ -80,7 +80,7 @@ const CurrentOrder = () => {
                 <div className="font-[600]">Add Items to your cart</div>
               </div>
             </div>
-            <div className="mt-11">
+            <div className="mt-5">
               <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
                 <div className="">
                   <div>Subtotal:</div>
@@ -199,7 +199,7 @@ const CurrentOrder = () => {
                   : null
                 : null}
             </div>
-            <div className="mt-11">
+            <div className="mt-5">
               <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5">
                 <div className="">
                   <div>Subtotal:</div>

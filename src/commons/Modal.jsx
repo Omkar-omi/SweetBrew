@@ -8,6 +8,7 @@ const Modal = ({
   setOpenModal,
   background = "#000000",
   children,
+  onClose,
 }) => {
   useEffect(() => {
     document.body.style.overflow = openModal ? "hidden" : "auto";
@@ -39,7 +40,10 @@ const Modal = ({
         <div className="absolute right-[-10px] sm:right-[-20px] top-[-20px] cursor-pointer z-20">
           <button
             className="border h-10 w-10 rounded-2xl border-primary bg-black "
-            onClick={() => setOpenModal(!openModal)}
+            onClick={() => {
+              setOpenModal(!openModal);
+              if (onClose) onClose();
+            }}
           >
             <MdClose className="h-5 w-5 mx-auto " />
           </button>

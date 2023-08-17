@@ -19,15 +19,13 @@ import { BsInfoCircle, BsCreditCard2Back } from "react-icons/bs";
 import { CgGoogle } from "react-icons/cg";
 import { UserContext } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
+import ChangeAddressModal from "../modals/ChangeAddressModal";
 
 const Checkout = () => {
   const [data, setData] = useState();
   const [address, setAddress] = useState("");
-  const [newaddress, setNewAddress] = useState(address);
   const [paymentmethod, setPaymentMethod] = useState("");
   const [deliverymethod, setDeliveryMethod] = useState(false);
-  const [area, setArea] = useState("");
-  const [pincode, setPincode] = useState("");
   const [discount, setDiscount] = useState(false);
   const [extracharges, setExtraCharges] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -36,9 +34,10 @@ const Checkout = () => {
   const [cartvalue, setCartvalue] = useState();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const getData = async () => {
@@ -62,26 +61,12 @@ const Checkout = () => {
       setCartvalue(doc.data().cartvalue);
     });
   };
-  const handleAddAddress = () => {
-    const docRef = doc(db, "users", user?.uid);
-    setDoc(
-      docRef,
-      {
-        address: newaddress,
-      },
-      { merge: true }
-    );
-    toast.success("Address updated successfully");
-    setAddress(newaddress);
-  };
   const handelCheckout = async () => {
     setIsPending(true);
     if (deliverymethod && paymentmethod && address) {
       const docRef = await addDoc(collection(db, "orders"), {
         name: user?.displayName,
         address: address,
-        area: area || "",
-        pincode: pincode || "",
         cart: cart,
         email: user?.email,
         paymentmethod: paymentmethod,
@@ -113,6 +98,8 @@ const Checkout = () => {
               cart: cart,
               timestamp: `${date} at ${time} `,
               orderid: docRef.id,
+              rating: 0,
+              review: "",
             },
           },
         },
@@ -167,7 +154,7 @@ const Checkout = () => {
       <div className="flex md:flex-row flex-col justify-center mb-4">
         <div className="pl-5 pr-5 lg:pl-40 pt-5 lg:pr-10 md:border-solid md:border-r-2 border-primary">
           <div>
-            <div className="text-white font-bold text-2xl">Summary Order</div>
+            <div className="text-white font-bold text-2xl">Order Summary</div>
             <div className="text-gray-200 w-80 font-medium my-2">
               Check your items and select your shipping according to your
               choice.
@@ -203,17 +190,11 @@ const Checkout = () => {
           </div>
           <div className="flex flex-col text-gray-200">
             <div className="font-medium mt-4">Available Shipping Methods </div>
-            <div className="flex flex-col md:flex-row">
-              <input
-                type="radio"
-                value="1"
-                name="radio"
-                id="radiofast"
-                className="radiocustom"
-              />
-              <label
-                htmlFor="radiofast"
-                className="labelcustom hover:outline outline-2 outline-primary w-72 p-3"
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
+              <div
+                className={`border rounded-[4px] cursor-pointer border-white hover:border-[#dc944c] w-72 p-3 ${
+                  delivery === "Fast" ? "border-[#dc944c]" : "border-white"
+                }`}
                 onClick={(e) => {
                   setExtraCharges(true);
                   setDiscount(false);
@@ -221,24 +202,19 @@ const Checkout = () => {
                   setDelivery("Fast");
                 }}
               >
-                <div className="flex  ">
+                <div className="flex">
                   <div className="felx flex-col">
                     <div>Fast/Expidited Delivery</div>
                     <div className="text-sm">In a hurry? Select this.</div>
                   </div>
                   <div className="ml-5">+ ₹40</div>
                 </div>
-              </label>
-              <input
-                type="radio"
-                value="2"
-                name="radio"
-                id="radioslow"
-                className="radiocustom"
-              />
-              <label
-                htmlFor="radioslow"
-                className="labelcustom hover:outline outline-2 outline-primary w-72 p-3"
+              </div>
+
+              <div
+                className={`border rounded-[4px] cursor-pointer border-white hover:border-[#dc944c] w-72 p-3 ${
+                  delivery === "Normal" ? "border-[#dc944c]" : "border-white"
+                }`}
                 onClick={(e) => {
                   setDiscount(true);
                   setExtraCharges(false);
@@ -253,7 +229,7 @@ const Checkout = () => {
                   </div>
                   <div className="ml-5">- ₹10</div>
                 </div>
-              </label>
+              </div>
             </div>
           </div>
         </div>
@@ -270,7 +246,7 @@ const Checkout = () => {
             </label>
             <input
               type="text"
-              className="p-2 rounded-lg border-solid border-4 border-green-400 text-black "
+              className="p-2 rounded-lg border-solid border-4 border-green-400 text-black  bg-white/90"
               id="email"
               value={user?.email}
               readOnly={true}
@@ -278,18 +254,23 @@ const Checkout = () => {
           </div>
           <div className="flex flex-col">
             <div className="text-gray-200 my-2">Delivery Address</div>
-
-            <input
+            <textarea
               type="text"
-              className="p-2 rounded-lg text-black "
-              value={newaddress ? newaddress : address}
-              onChange={(e) => setNewAddress(e.target.value)}
+              className={`p-2 resize-none rounded-lg text-black bg-white/90 h-[100px] ${
+                address && "border-4 border-green-400"
+              }`}
+              value={
+                address &&
+                `${address && address?.flatno?.trim()}, ${
+                  address && address?.area?.trim()
+                }, ${address && address?.landmark?.trim()} `
+              }
+              readOnly
             />
-
             <label
               className="btn btn-primary  mt-4"
               htmlFor="addAddress-modal"
-              onClick={handleAddAddress}
+              onClick={() => setOpenModal(true)}
             >
               {!address ? (
                 <>
@@ -303,23 +284,6 @@ const Checkout = () => {
                 </>
               )}
             </label>
-
-            <div className="flex flex-col  md:flex-row justify-between mt-4 gap-2">
-              <input
-                type="text"
-                className="p-2 rounded-lg text-black"
-                placeholder="Area (Optional)"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-              />
-              <input
-                type="number"
-                className="p-2 rounded-lg mt-4 md:mt-0 text-black pincodeInput"
-                placeholder="Pincode (Optional)"
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-              />
-            </div>
           </div>
           <div className="flex flex-row justify-between border-solid border-b-2 border-primary pb-5 mt-4 text-gray-200">
             <div>
@@ -374,72 +338,62 @@ const Checkout = () => {
                 : null}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-5 mt-4">
-            <div onClick={(e) => setPaymentMethod("Gpay")}>
-              <input
-                type="radio"
-                value="3"
-                name="paymentmethod"
-                id="radio-gpay"
-                className="radiocustom w-0"
-              />
-              <label
-                htmlFor="radio-gpay"
-                className="labelcustom  hover:outline outline-2 outline-primary p-2 md:p-2 text-base md:text-2xl justify-items-center text-gray-300"
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="flex gap-2 ">
+              <div
+                className={`w-1/2 cursor-pointer rounded-[4px] border hover:border-primary p-2 md:p-2 text-base md:text-[16px] text-gray-300 ${
+                  paymentmethod === "Gpay"
+                    ? "border-primary"
+                    : "border-transparent"
+                }`}
+                onClick={(e) => setPaymentMethod("Gpay")}
               >
-                <CgGoogle className="inline-flex text-3xl" />
-                Pay / UPI
-              </label>
+                <label htmlFor="radio-gpay" className="flex items-center">
+                  <CgGoogle className="inline-flex text-3xl" />
+                  Pay / UPI
+                </label>
+              </div>
+              <div
+                className={`w-1/2 cursor-pointer rounded-[4px] border hover:border-primary p-2 md:p-2 text-base md:text-[16px] text-gray-300 ${
+                  paymentmethod === "Debit Card"
+                    ? "border-primary"
+                    : "border-transparent"
+                }`}
+                onClick={(e) => setPaymentMethod("Debit Card")}
+              >
+                <label htmlFor="radio-db" className="flex items-center">
+                  <BsCreditCard2Back className="mr-2 inline-flex text-3xl" />
+                  Debit Card
+                </label>
+              </div>
             </div>
-            <div onClick={(e) => setPaymentMethod("Debit Card")}>
-              <input
-                type="radio"
-                value="3"
-                name="paymentmethod"
-                id="radio-db"
-                className="radiocustom w-0"
-              />
-              <label
-                htmlFor="radio-db"
-                className=" labelcustom hover:outline outline-2 outline-primary p-2 md:p-3 text-base md:text-lg text-gray-300"
+            <div className="flex gap-2 ">
+              <div
+                className={`w-1/2 cursor-pointer rounded-[4px] border hover:border-primary p-2 md:p-2 text-base md:text-[16px] text-gray-300 ${
+                  paymentmethod === "Credit Card"
+                    ? "border-primary"
+                    : "border-transparent"
+                }`}
+                onClick={(e) => setPaymentMethod("Credit Card")}
               >
-                <BsCreditCard2Back className="mr-2 inline-flex text-3xl" />
-                Debit Card
-              </label>
-            </div>
-            <div onClick={(e) => setPaymentMethod("Credit Card")}>
-              <input
-                type="radio"
-                value="3"
-                name="paymentmethod"
-                id="radio-cd"
-                className="radiocustom w-0"
-              />
-              <label
-                htmlFor="radio-cd"
-                className=" labelcustom hover:outline outline-2 outline-primary p-2 md:p-3 text-base md:text-lg text-gray-300"
+                <label htmlFor="radio-cd" className="flex items-center">
+                  <BsCreditCard2Back className="mr-2 inline-flex text-3xl" />
+                  Credit Card
+                </label>
+              </div>
+              <div
+                className={`w-1/2 cursor-pointer rounded-[4px] border hover:border-primary p-2 md:p-2 text-base md:text-[16px] text-gray-300 ${
+                  paymentmethod === "Cash On Delivery"
+                    ? "border-primary"
+                    : "border-transparent"
+                }`}
+                onClick={(e) => setPaymentMethod("Cash On Delivery")}
               >
-                <BsCreditCard2Back className="mr-2 inline-flex text-3xl" />
-                Credit Card
-              </label>
-            </div>
-            <div onClick={(e) => setPaymentMethod("Cash On Delivery")}>
-              <input
-                type="radio"
-                value="3"
-                name="paymentmethod"
-                id="radio-cod"
-                className="radiocustom w-0"
-              />
-              <label
-                htmlFor="radio-cod"
-                className="labelcustom hover:outline outline-2 outline-primary text-base md:text-lg p-2 md:p-3  text-gray-300"
-              >
-                Cash On Delivery
-              </label>
+                <label htmlFor="radio-cod">Cash On Delivery</label>
+              </div>
             </div>
           </div>
-          <div className="flex mt-4">
+          <div className="flex mt-2">
             {isPending && (
               <button className="content-center btn btn-primary grow loading">
                 Checking Out...
@@ -457,6 +411,14 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      {address && (
+        <ChangeAddressModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          address={address}
+          setAddress={setAddress}
+        />
+      )}
     </>
   );
 };

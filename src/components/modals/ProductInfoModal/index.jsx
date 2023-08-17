@@ -1,6 +1,6 @@
 import { Carousel } from "react-responsive-carousel";
-import Modal from "../../commons/Modal";
-import coffee from "../../images/Coffee.jpg";
+import coffee from "../../../images/Coffee.jpg";
+import Modal from "../../../commons/Modal";
 
 const ProductInfoModal = ({ openModal, setOpenModal, selectedProduct }) => {
   return (

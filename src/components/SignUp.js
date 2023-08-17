@@ -31,7 +31,11 @@ const SignUp = () => {
           name: name.charAt(0).toUpperCase() + name.slice(1),
           cart: {},
           cartvalue: 0,
-          address: "",
+          address: {
+            flatno: "",
+            area: "",
+            landmark: "",
+          },
           favourite: {},
           yourorders: {},
           email: createdUser?.user?.email,

@@ -25,7 +25,7 @@ const YourOrders = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const handelReview = async () => {
@@ -101,14 +101,14 @@ const YourOrders = () => {
                   : null}
                 {(product.review === "" || product.rating === null) && (
                   <div
-                    className="flex items-center justify-end mt-2"
+                    className="flex items-center justify-end mt-2 px-3 cursor-pointer w-max ml-auto"
                     value={index}
                     onMouseEnter={() => setId(product.orderid)}
                     onTouchStart={() => setId(product.orderid)}
                   >
                     <label
                       htmlFor="rating-modal"
-                      className="cursor-pointer md:text-lg"
+                      className="md:text-lg cursor-pointer"
                       value={product.orderid}
                     >
                       Rate{" "}
@@ -120,7 +120,7 @@ const YourOrders = () => {
                 )}
                 <div className="flex flex-row items-center justify-between p-3  ">
                   <div className="ml-2 text-white text-sm md:text-lg">
-                    Review: {product.review}
+                    Review: {product?.review}
                   </div>
                   <div className="flex flex-row mr-2">
                     <Star stars={product.rating} />
@@ -145,7 +145,7 @@ const YourOrders = () => {
             <div className="my-3">Write a Review:</div>
             <textarea
               placeholder="(Optional)"
-              className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 "
+              className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 resize-none"
               type="email"
               onChange={(e) => setReview(e.target.value)}
             />
@@ -166,12 +166,12 @@ const YourOrders = () => {
                     <input
                       type="radio"
                       name="rating"
-                      className="ratingcustom"
+                      className="hidden"
                       value={ratingValue}
                       onClick={() => setRating(ratingValue)}
                     />
                     <FaStar
-                      className="star"
+                      className="star cursor-pointer"
                       size={50}
                       color={
                         ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"

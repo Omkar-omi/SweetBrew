@@ -12,7 +12,7 @@ const NavBar = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    getData();
+    if (user) getData();
   }, [user]);
 
   const getData = async () => {

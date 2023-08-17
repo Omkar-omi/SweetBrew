@@ -12,7 +12,7 @@ import { UserContext } from "../../context/AuthContext";
 import db from "../../firebase";
 import { truncateString } from "../../utils/truncateString";
 import coffee from "../../images/Coffee.jpg";
-import ProductInfoModal from "../modals/ProductINfoModal";
+import ProductInfoModal from "../modals/ProductInfoModal";
 
 const ProductCard = ({ product }) => {
   const { user } = useContext(UserContext);
@@ -66,7 +66,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <>
-      <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group">
+      <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group overflow-hidden">
         <FavIconStatus favData={favData} product={product} />
         <Carousel
           showThumbs={false}
@@ -75,7 +75,7 @@ const ProductCard = ({ product }) => {
           showIndicators={false}
           showStatus={false}
           infiniteLoop
-          interval={5000}
+          interval={10000}
           stopOnHover
           emulateTouch
         >
@@ -122,7 +122,7 @@ const ProductCard = ({ product }) => {
                 max={100}
                 id="input"
                 placeholder="Enter Quantity"
-                className=" grow rounded-lg pl-3 py-1 icon customInput"
+                className="grow rounded-lg pl-3 py-1 icon"
                 required
                 onChange={(e) => {
                   setQty(e.target.value);
