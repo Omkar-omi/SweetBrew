@@ -46,6 +46,8 @@ const YourOrders = () => {
       },
       { merge: true }
     );
+    setRating(null);
+    setReview("");
   };
 
   const getData = async () => {
@@ -154,6 +156,7 @@ const YourOrders = () => {
             <label
               htmlFor="rating-modal"
               className="btn my-3 btn-primary"
+              // TODO: #1 Fix rating bug stars disappear
               onClick={handelReview}
             >
               Save
