@@ -48,12 +48,6 @@ const ProductInfoModal = ({ openModal, setOpenModal, selectedProduct }) => {
                 Price: ₹ {selectedProduct?.price}
               </div>
             </div>
-            <button
-              className="btn btn-primary w-full"
-              // onClick={handelAddToCart}
-            >
-              Add to cart
-            </button>
           </div>
         </div>
       </div>

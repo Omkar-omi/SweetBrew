@@ -44,9 +44,6 @@ const CurrentOrder = () => {
 
   const handelDelete = async (price, srno) => {
     const docRef = doc(db, "users", user?.uid);
-    // const srno = e.target.value;
-    // const price = e.target.getAttribute("data-price");
-
     await updateDoc(docRef, {
       [`cart.${srno}`]: deleteField(),
       cartvalue: increment(-price),
@@ -58,6 +55,9 @@ const CurrentOrder = () => {
       navigate("/checkout");
       setIsPending(false);
     }, 500);
+    document.querySelectorAll("#input").forEach((input) => {
+      input.value = "";
+    });
   };
 
   if (data && Object.values(data[0]?.cart).length === 0) {

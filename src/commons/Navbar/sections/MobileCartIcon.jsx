@@ -41,7 +41,7 @@ const MobileCartIcon = ({ product }) => {
       >
         <div className="static">
           <span className=" absolute text-black z-10 top-0 right-0 text-md bg-primary rounded-full w-5 h-5  p-1">
-            {Object.keys(product.cart).length}
+            {product && Object.keys(product.cart).length}
           </span>
           <div className="rounded-full ring ring-success ring-offset-base-100 ring-offset-8">
             <BsFillCartFill className=" h-6 w-6" />
@@ -51,7 +51,7 @@ const MobileCartIcon = ({ product }) => {
       <div className=" mt-3 card card-compact dropdown-content w-64 min-[400px]:w-80  bg-gray-800 text-white shadow !-right-[25px]">
         <div className="card-body">
           <span className="font-bold text-lg">{`${
-            Object.keys(product.cart).length
+            product && Object.keys(product.cart).length
           } Items`}</span>
           <span className="text-info">{`Subtotal: ₹ ${product.cartvalue}`}</span>
           <hr />
@@ -115,9 +115,10 @@ const MobileCartIcon = ({ product }) => {
               </div>
             ))}
 
-          {!Object.keys(product.cart).length === 0 && <hr />}
+          {product && !Object.keys(product.cart).length === 0 && <hr />}
           <div className="card-actions">
             {!isPending ? (
+              product &&
               !Object.keys(product.cart).length === 0 && (
                 <button
                   className="btn btn-primary btn-block"

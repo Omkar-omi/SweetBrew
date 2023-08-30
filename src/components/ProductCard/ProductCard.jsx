@@ -18,7 +18,6 @@ const ProductCard = ({ product }) => {
   const { user } = useContext(UserContext);
   const [favData, setFavData] = useState();
   const [qty, setQty] = useState();
-  const [no, setNo] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
 
@@ -29,19 +28,19 @@ const ProductCard = ({ product }) => {
   const getFavData = async () => {
     const doc1 = doc(db, "users", user?.uid);
     onSnapshot(doc1, (snapshot) => {
-      setFavData(Object.values(snapshot?.data().favourite));
+      setFavData(snapshot && Object.values(snapshot?.data().favourite));
     });
   };
 
-  const handelAddToCart = async (productName, productPrice) => {
+  const handelAddToCart = async (productName, productPrice, srno) => {
     if (qty > 0) {
       const docRef = doc(db, "users", user?.uid);
       setDoc(
         docRef,
         {
           cart: {
-            [`${no}`]: {
-              srno: no,
+            [`${srno}`]: {
+              srno: srno,
               quantity: Number(qty),
               product: productName,
               price: productPrice * qty,
@@ -57,10 +56,6 @@ const ProductCard = ({ product }) => {
       });
 
       setQty(0);
-      setNo(no + 1);
-      document.querySelectorAll("#input").forEach((input) => {
-        input.value = "";
-      });
     }
   };
 
@@ -132,7 +127,9 @@ const ProductCard = ({ product }) => {
             </div>
             <button
               className="btn btn-primary w-full"
-              onClick={() => handelAddToCart(product.name, product.price)}
+              onClick={() =>
+                handelAddToCart(product.name, product.price, product.srno)
+              }
             >
               Add to cart
             </button>
@@ -140,7 +137,6 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
       <ProductInfoModal
-        no={no}
         openModal={openModal}
         setOpenModal={setOpenModal}
         selectedProduct={selectedProduct}
