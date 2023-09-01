@@ -407,6 +407,7 @@ const Checkout = () => {
             )}
             {!isPending && (
               <button
+                disabled={data && Object.values(data[0].cart).length <= 0}
                 className="content-center btn btn-primary grow"
                 onClick={handelCheckout}
               >
