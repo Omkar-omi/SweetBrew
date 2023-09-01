@@ -119,7 +119,7 @@ const MobileCartIcon = ({ product }) => {
           <div className="card-actions">
             {!isPending ? (
               product &&
-              !Object.keys(product.cart).length === 0 && (
+              Object.values(product.cart).length > 0 && (
                 <button
                   className="btn btn-primary btn-block"
                   onClick={handelCheckout}

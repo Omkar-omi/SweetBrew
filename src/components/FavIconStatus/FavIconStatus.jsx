@@ -44,7 +44,7 @@ const FavIconStatus = ({ favData, product }) => {
     innerContainerStyle:
       "group/heart relative h-10 w-10 flex justify-center items-center",
     animatedHeartStyle:
-      "absolute top-auto left-auto md:hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping",
+      "absolute top-auto left-auto hidden text-red-600  group-hover/heart:block  h-8 w-8 group-hover/heart:animate-ping",
     heartStyle:
       "absolute top-0 left-0 text-red-600 md:hidden  group-hover:block  h-10 w-10",
   };
