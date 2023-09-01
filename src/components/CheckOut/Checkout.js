@@ -40,6 +40,10 @@ const Checkout = () => {
     if (user) getData();
   }, [user]);
 
+  useEffect(() => {
+    if (user === null) navigate("/login");
+  }, [user]);
+
   const getData = async () => {
     const docRef = query(
       collection(db, "users"),
@@ -116,7 +120,9 @@ const Checkout = () => {
       setIsPending(false);
     }
   };
-
+  if (!user) {
+    return;
+  }
   return (
     <>
       <nav className="m-5 flex gap-5 justify-between border-b-2 border-primary pb-3 ">

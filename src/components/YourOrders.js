@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import db from "../firebase";
 
 import { BsChevronRight } from "react-icons/bs";
@@ -23,6 +23,7 @@ const YourOrders = () => {
   const [review, setReview] = useState("");
   const [id, setId] = useState("");
   const [data, setData] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) getData();
@@ -64,6 +65,15 @@ const YourOrders = () => {
       );
     });
   };
+
+  useEffect(() => {
+    if (user === null) navigate("/login");
+  }, [user]);
+
+  if (!user) {
+    return;
+  }
+
   if (data && Object.values(data[0].yourorders).length === 0) {
     return (
       <>

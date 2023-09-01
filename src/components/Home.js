@@ -13,6 +13,9 @@ const Home = () => {
     if (user === null) navigate("/login");
   }, [user]);
 
+  if (!user) {
+    return;
+  }
   return (
     <div>
       <NavBar />

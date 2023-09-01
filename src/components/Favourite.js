@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import db from "../firebase";
 import coffee from "../images/Coffee.jpg";
 import { UserContext } from "../context/AuthContext";
@@ -17,6 +17,7 @@ import { UserContext } from "../context/AuthContext";
 const Favourite = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) getData();
@@ -44,6 +45,13 @@ const Favourite = () => {
       [`favourite.${srno}`]: deleteField(),
     });
   };
+  useEffect(() => {
+    if (user === null) navigate("/login");
+  }, [user]);
+
+  if (!user) {
+    return;
+  }
   if (data && Object.values(data[0].favourite).length === 0) {
     return (
       <>

@@ -89,6 +89,14 @@ const Profile = () => {
         setIsPending(false);
       });
   };
+
+  useEffect(() => {
+    if (user === null) navigate("/login");
+  }, [user]);
+
+  if (!user) {
+    return;
+  }
   return (
     <div className="flex flex-col ">
       <nav className="inline-block m-5 ">
