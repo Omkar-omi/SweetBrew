@@ -6,10 +6,10 @@ import { doc, setDoc } from "firebase/firestore";
 import db from "../firebase";
 
 const SignUp = () => {
-  const [name, setName] = useState("aasas");
-  const [email, setEmail] = useState("asas@asas.com");
-  const [password, setPassword] = useState("1234567890");
-  const [cnfpassword, setcnfPassword] = useState("1234567890");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cnfpassword, setcnfPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
