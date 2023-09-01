@@ -55,9 +55,6 @@ const CurrentOrder = () => {
       navigate("/checkout");
       setIsPending(false);
     }, 500);
-    document.querySelectorAll("#input").forEach((input) => {
-      input.value = "";
-    });
   };
 
   if (data && Object.values(data[0]?.cart).length === 0) {
@@ -166,7 +163,6 @@ const CurrentOrder = () => {
                                 className="font-[700] text-[20px] border rounded-[8px] border-primary cursor-pointer hover:text-primary"
                                 onClick={async (e) => {
                                   const docRef = doc(db, "users", user?.uid);
-                                  // console.log(product.quantity);
                                   if (product.quantity <= 1) {
                                     await updateDoc(docRef, {
                                       [`cart.${product.srno}`]: deleteField(),

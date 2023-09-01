@@ -13,6 +13,8 @@ import db from "../../firebase";
 import { truncateString } from "../../utils/truncateString";
 import coffee from "../../images/Coffee.jpg";
 import ProductInfoModal from "../modals/ProductInfoModal";
+import hasItemInArray from "../../utils/hasItemInArray";
+import hasProductInCart from "../../utils/hasProductInCart";
 
 const ProductCard = ({ product }) => {
   const { user } = useContext(UserContext);
@@ -20,42 +22,74 @@ const ProductCard = ({ product }) => {
   const [qty, setQty] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
+  const [cart, setCart] = useState();
 
   useEffect(() => {
     getFavData();
   }, [user]);
 
   const getFavData = async () => {
-    const doc1 = doc(db, "users", user?.uid);
-    onSnapshot(doc1, (snapshot) => {
+    const userDocRef = doc(db, "users", user?.uid);
+    onSnapshot(userDocRef, (snapshot) => {
       setFavData(snapshot && Object.values(snapshot?.data().favourite));
+    });
+    onSnapshot(userDocRef, (snapshot) => {
+      setCart(snapshot && Object.values(snapshot?.data().cart));
     });
   };
 
-  const handelAddToCart = async (productName, productPrice, srno) => {
+  const handelAddToCart = (productName, productPrice, srno) => {
+    const docRef = doc(db, "users", user?.uid);
+    document.querySelectorAll("#input").forEach((input) => {
+      input.value = "";
+    });
     if (qty > 0) {
-      const docRef = doc(db, "users", user?.uid);
-      setDoc(
-        docRef,
-        {
-          cart: {
-            [`${srno}`]: {
-              srno: srno,
-              quantity: Number(qty),
-              product: productName,
-              price: productPrice * qty,
-              actual_price: productPrice,
+      if (hasItemInArray(cart, productName)) {
+        const productInCart = hasProductInCart(cart, productName);
+        const newQty = Number(qty) + Number(productInCart.product.quantity);
+        const newCartValue = productInCart.cartvalue + productPrice * qty;
+        setDoc(
+          docRef,
+          {
+            cart: {
+              [`${srno}`]: {
+                srno: srno,
+                quantity: Number(newQty),
+                product: productName,
+                price: productPrice * newQty,
+                actual_price: productPrice,
+              },
             },
           },
-        },
-        { merge: true }
-      );
+          { merge: true }
+        );
+        updateDoc(docRef, {
+          cartvalue: newCartValue,
+        });
+        setQty(0);
+        return;
+      } else {
+        setDoc(
+          docRef,
+          {
+            cart: {
+              [`${srno}`]: {
+                srno: srno,
+                quantity: Number(qty),
+                product: productName,
+                price: productPrice * qty,
+                actual_price: productPrice,
+              },
+            },
+          },
+          { merge: true }
+        );
 
-      updateDoc(docRef, {
-        cartvalue: increment(productPrice * qty),
-      });
-
-      setQty(0);
+        updateDoc(docRef, {
+          cartvalue: increment(productPrice * qty),
+        });
+        setQty(0);
+      }
     }
   };
 

@@ -40,7 +40,6 @@ const Favourite = () => {
   const handelDelete = async (e) => {
     const docRef = doc(db, "users", user?.uid);
     const srno = e.target.value;
-    console.log(srno);
     await updateDoc(docRef, {
       [`favourite.${srno}`]: deleteField(),
     });
