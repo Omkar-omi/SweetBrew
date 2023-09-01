@@ -47,13 +47,16 @@ const Favourite = () => {
   if (data && Object.values(data[0].favourite).length === 0) {
     return (
       <>
-        <nav className="m-5 flex  pb-3 border-b-2 border-solid border-primary ">
+        <nav className="m-5 flex items-center pb-3 border-b-2 border-solid border-primary ">
           <Link to={"/"}>
             <FaArrowLeft className=" w-5 h-5" />
           </Link>
           <div className="ml-5 text-xl  text-white">Your Favourite</div>
         </nav>
-        <div className="flex items-center justify-center h-96">
+        <div className="flex flex-col items-center justify-center h-96">
+          <div className="text-2xl text-primary text-center">
+            Nothing added to favourite's yet.
+          </div>
           <div className="text-2xl text-primary text-center">
             Add Items to Your Favourite List
           </div>

@@ -64,133 +64,150 @@ const YourOrders = () => {
       );
     });
   };
-
-  return (
-    <>
-      <nav className="m-5 flex items-center  pb-3 border-b-2 border-solid border-primary ">
-        <Link to={"/"}>
-          <FaArrowLeft className=" w-5 h-5" />{" "}
-        </Link>
-        <div className="ml-5 text-xl  text-white">Order History</div>
-      </nav>
-      <div className="flex items-center flex-col">
-        {data
-          ? Object.values(data[0].yourorders).map((product, index) => (
-              <div
-                className="flex flex-col mb-5 w-72 md:w-[600px] border-solid border-2 p-3 rounded-lg"
-                key={index}
-              >
-                {data
-                  ? Object.values(product.cart).map((item, i) => (
-                      <div className="mx-4 flex flex-col grow" key={i}>
-                        <div className="flex items-center justify-between">
-                          <div className="text-warning md:text-xl">{`${item.quantity} x`}</div>
-                          <div className="font-medium text-white pb-2 md:text-xl my-2">
-                            {" "}
-                            {item.product}
+  if (data && Object.values(data[0].yourorders).length === 0) {
+    return (
+      <>
+        <nav className="m-5 flex items-center pb-3 border-b-2 border-solid border-primary ">
+          <Link to={"/"}>
+            <FaArrowLeft className=" w-5 h-5" />
+          </Link>
+          <div className="ml-5 text-xl text-white">Order History</div>
+        </nav>
+        <div className="flex flex-col items-center justify-center h-96 text-2xl text-primary text-center">
+          You have&apos;t ordered anything yet!
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <nav className="m-5 flex items-center  pb-3 border-b-2 border-solid border-primary ">
+          <Link to={"/"}>
+            <FaArrowLeft className=" w-5 h-5" />{" "}
+          </Link>
+          <div className="ml-5 text-xl text-white">Order History</div>
+        </nav>
+        <div className="flex items-center flex-col">
+          {data
+            ? Object.values(data[0].yourorders).map((product, index) => (
+                <div
+                  className="flex flex-col mb-5 w-72 md:w-[600px] border-solid border-2 p-3 rounded-lg"
+                  key={index}
+                >
+                  {data
+                    ? Object.values(product.cart).map((item, i) => (
+                        <div className="mx-4 flex flex-col grow" key={i}>
+                          <div className="flex items-center justify-between">
+                            <div className="text-warning md:text-xl">{`${item.quantity} x`}</div>
+                            <div className="font-medium text-white pb-2 md:text-xl my-2">
+                              {" "}
+                              {item.product}
+                            </div>
                           </div>
-                        </div>
-                        <hr />
-                        <div className="flex flex-row my-2 justify-between items-center">
-                          <div className="text-xs md:text-lg">
-                            {product.timestamp}
+                          <hr />
+                          <div className="flex flex-row my-2 justify-between items-center">
+                            <div className="text-xs md:text-lg">
+                              {product.timestamp}
+                            </div>
+                            <div className="text-sm md:text-xl">{`₹ ${item.price}`}</div>
                           </div>
-                          <div className="text-sm md:text-xl">{`₹ ${item.price}`}</div>
+                          <hr />
                         </div>
-                        <hr />
-                      </div>
-                    ))
-                  : null}
-                {(product.review === "" || product.rating === null) && (
-                  <div
-                    className="flex items-center justify-end mt-2 px-3 cursor-pointer w-max ml-auto"
-                    value={index}
-                    onMouseEnter={() => setId(product.orderid)}
-                    onTouchStart={() => setId(product.orderid)}
-                  >
-                    <label
-                      htmlFor="rating-modal"
-                      className="md:text-lg cursor-pointer"
-                      value={product.orderid}
+                      ))
+                    : null}
+                  {(product.review === "" || product.rating === null) && (
+                    <div
+                      className="flex items-center justify-end mt-2 px-3 cursor-pointer w-max ml-auto"
+                      value={index}
+                      onMouseEnter={() => setId(product.orderid)}
+                      onTouchStart={() => setId(product.orderid)}
                     >
-                      Rate{" "}
-                    </label>
-                    <div>
-                      <BsChevronRight />
+                      <label
+                        htmlFor="rating-modal"
+                        className="md:text-lg cursor-pointer"
+                        value={product.orderid}
+                      >
+                        Rate{" "}
+                      </label>
+                      <div>
+                        <BsChevronRight />
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-row items-center justify-between p-3  ">
+                    <div className="ml-2 text-white text-sm md:text-lg">
+                      Review: {product?.review}
+                    </div>
+                    <div className="flex flex-row mr-2">
+                      <Star stars={product.rating} />
                     </div>
                   </div>
-                )}
-                <div className="flex flex-row items-center justify-between p-3  ">
-                  <div className="ml-2 text-white text-sm md:text-lg">
-                    Review: {product?.review}
-                  </div>
-                  <div className="flex flex-row mr-2">
-                    <Star stars={product.rating} />
-                  </div>
                 </div>
-              </div>
-            ))
-          : null}
-      </div>
-      {/* modal for rating   */}
-      <input type="checkbox" id="rating-modal" className="modal-toggle" />
-      <div className="modal modal-middle">
-        <div className="modal-box">
-          <label
-            htmlFor="rating-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="font-bold text-lg">Rate your order:</h3>
-          <div className="flex flex-col ">
-            <div className="my-3">Write a Review:</div>
-            <textarea
-              placeholder="(Optional)"
-              className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 resize-none"
-              type="email"
-              onChange={(e) => setReview(e.target.value)}
-            />
-          </div>
-          <div className="flex justify-between items-center my-3">
+              ))
+            : null}
+        </div>
+        {/* modal for rating   */}
+        <input type="checkbox" id="rating-modal" className="modal-toggle" />
+        <div className="modal modal-middle">
+          <div className="modal-box">
             <label
               htmlFor="rating-modal"
-              className="btn my-3 btn-primary"
-              // TODO: #1 Fix rating bug stars disappear
-              onClick={handelReview}
+              className="btn btn-sm btn-circle absolute right-2 top-2"
             >
-              Save
+              ✕
             </label>
-            <div className="flex">
-              {[...Array(5)].map((star, i) => {
-                const ratingValue = i + 1;
-                return (
-                  <label key={i}>
-                    <input
-                      type="radio"
-                      name="rating"
-                      className="hidden"
-                      value={ratingValue}
-                      onClick={() => setRating(ratingValue)}
-                    />
-                    <FaStar
-                      className="star cursor-pointer"
-                      size={50}
-                      color={
-                        ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"
-                      }
-                      onMouseEnter={() => setHover(ratingValue)}
-                      onMouseLeave={() => setHover(null)}
-                    />
-                  </label>
-                );
-              })}
+            <h3 className="font-bold text-lg">Rate your order:</h3>
+            <div className="flex flex-col ">
+              <div className="my-3">Write a Review:</div>
+              <textarea
+                placeholder="(Optional)"
+                className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 resize-none"
+                type="email"
+                onChange={(e) => setReview(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-between items-center my-3">
+              <label
+                htmlFor="rating-modal"
+                className="btn my-3 btn-primary"
+                // TODO: #1 Fix rating bug stars disappear
+                onClick={handelReview}
+              >
+                Save
+              </label>
+              <div className="flex">
+                {[...Array(5)].map((star, i) => {
+                  const ratingValue = i + 1;
+                  return (
+                    <label key={i}>
+                      <input
+                        type="radio"
+                        name="rating"
+                        className="hidden"
+                        value={ratingValue}
+                        onClick={() => setRating(ratingValue)}
+                      />
+                      <FaStar
+                        className="star cursor-pointer"
+                        size={50}
+                        color={
+                          ratingValue <= (hover || rating)
+                            ? "#ffc107"
+                            : "#e4e5e9"
+                        }
+                        onMouseEnter={() => setHover(ratingValue)}
+                        onMouseLeave={() => setHover(null)}
+                      />
+                    </label>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default YourOrders;

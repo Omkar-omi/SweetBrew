@@ -1,4 +1,4 @@
-import { SiCoffeescript } from "react-icons/si";
+import logo from "../../images/logo.png";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
@@ -35,10 +35,10 @@ const NavBar = () => {
       <div className="flex-1">
         <Link
           to={"/"}
-          className="btn btn-ghost normal-case text-xl text-center"
+          className="flex gap-2 items-center btn btn-ghost normal-case text-xl text-center"
         >
-          <SiCoffeescript />
-          &nbsp; Coffee House
+          <img src={logo} alt="coffee" className="w-[25px] h-[25px]" />
+          <div>Sweet Brew</div>
         </Link>
       </div>
       <div>
