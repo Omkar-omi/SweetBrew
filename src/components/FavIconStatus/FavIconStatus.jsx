@@ -17,7 +17,12 @@ const FavIconStatus = ({ favData, product }) => {
     toast.success(`${name} removed from favourite`);
   };
 
-  const handelFavourite = async (srno, productName, productPrice) => {
+  const handelFavourite = async (
+    srno,
+    productName,
+    productPrice,
+    productDescription
+  ) => {
     const docRef = doc(db, "users", user?.uid);
     setDoc(
       docRef,
@@ -27,6 +32,7 @@ const FavIconStatus = ({ favData, product }) => {
             srno: srno,
             product: productName,
             price: productPrice,
+            description: productDescription,
           },
         },
       },
@@ -69,7 +75,12 @@ const FavIconStatus = ({ favData, product }) => {
             <AiOutlineHeart
               className={styles.heartStyle}
               onClick={() =>
-                handelFavourite(product.srno, product.name, product.price)
+                handelFavourite(
+                  product.srno,
+                  product.name,
+                  product.price,
+                  product.description
+                )
               }
             />
           </div>

@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import db from "../firebase";
 import coffee from "../images/Coffee.jpg";
 import { UserContext } from "../context/AuthContext";
+import { MdDeleteOutline } from "react-icons/md";
 
 const Favourite = () => {
   const { user } = useContext(UserContext);
@@ -38,9 +39,8 @@ const Favourite = () => {
     });
   };
 
-  const handelDelete = async (e) => {
+  const handelDelete = async (srno) => {
     const docRef = doc(db, "users", user?.uid);
-    const srno = e.target.value;
     await updateDoc(docRef, {
       [`favourite.${srno}`]: deleteField(),
     });
@@ -80,40 +80,42 @@ const Favourite = () => {
           </Link>
           <div className="ml-5 text-xl  text-white">Your Favourite</div>
         </nav>
-        <div className="flex items-center flex-col">
-          {data
-            ? Object.values(data[0].favourite).map((product) => (
-                <div key={product.srno}>
-                  <div className="flex flex-col mb-5 w-80 md:w-[600px] border-solid border-2 p-3 rounded-lg">
-                    <div className="md:mx-4 flex items-center">
-                      <div className="flex grow">
-                        <img
-                          src={coffee}
-                          className="h-20 w-20 rounded-xl "
-                          alt="coffee"
-                        />
-                      </div>
-                      <div>
-                        <div className="text-end font-medium text-sm w-36 md:w-auto text-white md:text-xl my-2">
-                          {" "}
+        <div className="flex flex-col">
+          {data &&
+            Object.values(data[0].favourite).map((product) => (
+              <div key={product.srno}>
+                <div className="flex gap-4 items-center mb-5  mx-2 md:mx-auto md:w-[600px] border-white/50 border p-3 rounded-lg">
+                  <div className="flex flex-col gap-2 w-full">
+                    <div className="flex justify-between items-center">
+                      <img
+                        src={coffee}
+                        className="h-20 w-20 rounded-xl aspect-square"
+                        alt="coffee"
+                      />
+                      <div className="hidden min-[400px]:flex flex-col gap-2">
+                        <div className="text-end font-medium text-base  text-white">
                           {product.product}
                         </div>
-                        <div className="flex justify-end text-sm md:text-xl my-2">{`₹ ${product.price}`}</div>
-                      </div>
-                      <div>
-                        <button
-                          className="btn ml-4"
-                          value={product.srno}
-                          onClick={handelDelete}
-                        >
-                          X
-                        </button>
+                        <div className="flex justify-end text-base">{`₹ ${product.price}`}</div>
                       </div>
                     </div>
+                    <div className="flex flex-col items-start">
+                      <div className="flex min-[400px]:hidden items-center gap-2">
+                        <div className="text-end font-medium text-base  text-white">
+                          {product.product}
+                        </div>
+                        <div className="flex justify-end text-base">{`₹ ${product.price}`}</div>
+                      </div>
+                      <div>{product.description}</div>
+                    </div>
                   </div>
+                  <MdDeleteOutline
+                    onClick={() => handelDelete(product.srno)}
+                    className="h-5 w-5 hover:text-red-500 hover:scale-110"
+                  />
                 </div>
-              ))
-            : null}
+              </div>
+            ))}
         </div>
       </>
     );
