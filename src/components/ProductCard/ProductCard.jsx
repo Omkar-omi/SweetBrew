@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <>
-      <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group overflow-hidden">
+      <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-1 group overflow-hidden">
         {user && <FavIconStatus favData={favData} product={product} />}
         <Carousel
           showThumbs={false}
