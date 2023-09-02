@@ -30,12 +30,14 @@ const RatingModal = ({
         <div className="flex flex-col ">
           <div className="my-3">Write a Review:</div>
           <textarea
+            maxLength={200}
             placeholder="(Optional)"
             className="p-2 rounded-lg text-white w-full h-24 resize-none"
             type="email"
             value={review}
             onChange={(e) => setReview(e.target.value)}
           />
+          <div className="w-max ml-auto">{review.length} / 200</div>
         </div>
         <div className="flex justify-between items-center my-3">
           <div
