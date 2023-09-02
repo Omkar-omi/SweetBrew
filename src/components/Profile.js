@@ -53,7 +53,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (user === null) navigate("/login");
+    if (user === null) navigate("/");
   }, [user]);
 
   if (!user) {

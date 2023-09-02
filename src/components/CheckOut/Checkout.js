@@ -41,7 +41,7 @@ const Checkout = () => {
   }, [user]);
 
   useEffect(() => {
-    if (user === null) navigate("/login");
+    if (user === null) navigate("/");
   }, [user]);
 
   const getData = async () => {

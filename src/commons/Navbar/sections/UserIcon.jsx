@@ -11,7 +11,6 @@ const UserIcon = () => {
   const handelLogout = async () => {
     try {
       await logout();
-      navigate("/login");
       toast.success(`${user?.displayName} has logged out`);
     } catch (e) {
       console.error(e.message);

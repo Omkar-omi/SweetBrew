@@ -1,5 +1,5 @@
 import logo from "../../images/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -9,6 +9,7 @@ import MobileCartIcon from "./sections/MobileCartIcon";
 
 const NavBar = () => {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -41,14 +42,20 @@ const NavBar = () => {
           <div>Sweet Brew</div>
         </Link>
       </div>
-      <div>
-        {data &&
-          data.length > 0 &&
-          Object.values(data).map((product, index) => (
-            <MobileCartIcon product={product} key={index} />
-          ))}
-        <UserIcon />
-      </div>
+      {!user ? (
+        <div onClick={() => navigate("/login")} className="btn btn-primary">
+          Login
+        </div>
+      ) : (
+        <div>
+          {data &&
+            data.length > 0 &&
+            Object.values(data).map((product, index) => (
+              <MobileCartIcon product={product} key={index} />
+            ))}
+          <UserIcon />
+        </div>
+      )}
     </div>
   );
 };

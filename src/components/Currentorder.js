@@ -57,7 +57,7 @@ const CurrentOrder = () => {
     }, 500);
   };
 
-  if (data && Object.values(data[0]?.cart).length === 0) {
+  if ((data && Object.values(data[0]?.cart).length === 0) || !user) {
     return (
       <div className="relative sm:block hidden bg-neutral p-10 min-w-[384px] mt-10">
         <div className="sticky top-20">

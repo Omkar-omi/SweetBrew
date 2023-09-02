@@ -10,8 +10,8 @@ You can heck this project here: https://sweetbrew.vercel.app/
 
 ![Screenshot 2023-09-02 at 8 05 41 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/9f917bec-a69b-4ae6-b6ac-7a6378724874)
 
-
 ## Dashbord UI(small Screen)
+
 <div style="display: flex;'>
   
   ![Screenshot 2023-09-02 at 7 41 41 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/f3bd9d60-850c-4c64-ae7b-d3bcaa80ff66) 
@@ -29,7 +29,6 @@ You can heck this project here: https://sweetbrew.vercel.app/
 
 ![Screenshot 2023-09-02 at 7 52 07 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/fbd18068-0663-47ff-9c20-0152f05fc268)
 
-
 ## CheckOut page
 
 ![Screenshot 2023-09-02 at 8 03 43 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/f932c55c-5aad-4c83-99c2-3fbb54f78477)
@@ -38,16 +37,13 @@ You can heck this project here: https://sweetbrew.vercel.app/
 
 ![Screenshot 2023-09-02 at 7 43 16 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/e023c0af-84e3-4c67-aca7-234f1d629d48)
 
-
 ## Your Past Orders menu (Small Screen)
+
 ![Screenshot 2023-09-02 at 7 59 21 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/4c28e71b-dd41-41ca-af24-385025cbb59c)
-
-
 
 ## Your Favourite items menu
 
 ![Screenshot 2023-09-02 at 8 00 16 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/22461609-5258-4ded-8b5a-522e7cbc315a)
-
 
 ## Login Page
 
@@ -71,3 +67,4 @@ You can heck this project here: https://sweetbrew.vercel.app/
 10. Added increase/decrease button on current order screen. &#9989;
 11. Fixed The cart system. &#9989;
 12. New ui, added modals and vatious ux changes. &#9989;
+13. Let users use the parts of website where auth is not required, without loging in first. &#9989;

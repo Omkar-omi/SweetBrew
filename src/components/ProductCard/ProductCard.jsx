@@ -15,6 +15,7 @@ import coffee from "../../images/Coffee.jpg";
 import ProductInfoModal from "../modals/ProductInfoModal";
 import hasItemInArray from "../../utils/hasItemInArray";
 import hasProductInCart from "../../utils/hasProductInCart";
+import { toast } from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
   const { user } = useContext(UserContext);
@@ -25,7 +26,7 @@ const ProductCard = ({ product }) => {
   const [cart, setCart] = useState();
 
   useEffect(() => {
-    getFavData();
+    if (user) getFavData();
   }, [user]);
 
   const getFavData = async () => {
@@ -39,6 +40,10 @@ const ProductCard = ({ product }) => {
   };
 
   const handelAddToCart = (productName, productPrice, srno) => {
+    if (!user) {
+      toast.error("Login first to add items to your cart");
+      return;
+    }
     const docRef = doc(db, "users", user?.uid);
     document.querySelectorAll("#input").forEach((input) => {
       input.value = "";
@@ -96,7 +101,7 @@ const ProductCard = ({ product }) => {
   return (
     <>
       <div className="relative card w-full md:w-[320px] bg-neutral shadow-xl mb-5 mx-2 group overflow-hidden">
-        <FavIconStatus favData={favData} product={product} />
+        {user && <FavIconStatus favData={favData} product={product} />}
         <Carousel
           showThumbs={false}
           autoPlay={!openModal}
