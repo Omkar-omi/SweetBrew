@@ -4,35 +4,50 @@ You can heck this project here: https://sweetbrew.vercel.app/
 
 ## Dashbord UI
 
-![image](https://user-images.githubusercontent.com/113718239/221593191-1c5c3be9-8421-4140-a3f4-3d5fc689c7c7.png)
+![Screenshot 2023-09-02 at 7 39 09 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/f4c2408b-6136-4e21-a98a-d073398cee6b)
+
+## New Product info modal
+
+![Screenshot 2023-09-02 at 8 05 41 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/9f917bec-a69b-4ae6-b6ac-7a6378724874)
+
 
 ## Dashbord UI(small Screen)
-
-![homepage small screen](https://user-images.githubusercontent.com/113718239/200560121-6d6570dc-bf0b-47be-b15f-f1938b877470.png)
+<div style="display: flex;'>
+  
+  ![Screenshot 2023-09-02 at 7 41 41 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/f3bd9d60-850c-4c64-ae7b-d3bcaa80ff66) 
+  ![Screenshot 2023-09-02 at 7 42 00 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/64549823-d41e-4430-af5a-24f8c1c60f67)
+  
+</div>
 
 ## Edit profile
 
 ![Screenshot 2022-11-03 at 8 06 25 PM](https://user-images.githubusercontent.com/113718239/199750879-5f3f6d74-6dfb-461e-8eca-4f42fbe187eb.png)
 
-## Edit profile(small Screen)
+## Edit profile (new update modals)
 
-![Screenshot 2022-11-03 at 8 06 15 PM](https://user-images.githubusercontent.com/113718239/199750896-97c6cdbf-b848-4afd-8f3c-bca0617d90bd.png)
+![Screenshot 2023-09-02 at 7 51 57 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/7ed36a7a-3cbf-438e-93ab-81a71fdb853a)
+
+![Screenshot 2023-09-02 at 7 52 07 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/fbd18068-0663-47ff-9c20-0152f05fc268)
+
 
 ## CheckOut page
 
-![checkout](https://user-images.githubusercontent.com/113718239/200158299-f112843b-6168-4421-94e5-54b7be1353a1.png)
+![Screenshot 2023-09-02 at 8 03 43 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/f932c55c-5aad-4c83-99c2-3fbb54f78477)
 
-## Your Past Orders menu (Big Screen)
+## Your Past Orders menu (Big Screen)(new Detailed info)
 
-![your orders big screen](https://user-images.githubusercontent.com/113718239/200382630-9432ced1-4a49-4a9a-ac96-be1aa345ddf7.png)
+![Screenshot 2023-09-02 at 7 43 16 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/e023c0af-84e3-4c67-aca7-234f1d629d48)
+
 
 ## Your Past Orders menu (Small Screen)
+![Screenshot 2023-09-02 at 7 59 21 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/4c28e71b-dd41-41ca-af24-385025cbb59c)
 
-![your orders small screen](https://user-images.githubusercontent.com/113718239/200382653-b1f7320a-8044-42e8-97cc-679ac8732e0d.png)
+
 
 ## Your Favourite items menu
 
-![FAVITEMS UI](https://user-images.githubusercontent.com/113718239/200842206-e0632945-ed9e-46e1-8eb3-bc5add20b282.png)
+![Screenshot 2023-09-02 at 8 00 16 AM](https://github.com/Omkar-omi/SweetBrew/assets/113718239/22461609-5258-4ded-8b5a-522e7cbc315a)
+
 
 ## Login Page
 
@@ -54,3 +69,5 @@ You can heck this project here: https://sweetbrew.vercel.app/
 8. Rating the orders and wrinting review feature. &#9989;
 9. Add/Remove items to favourite list. &#9989;
 10. Added increase/decrease button on current order screen. &#9989;
+11. Fixed The cart system. &#9989;
+12. New ui, added modals and vatious ux changes. &#9989;
