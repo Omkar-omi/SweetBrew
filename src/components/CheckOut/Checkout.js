@@ -102,6 +102,13 @@ const Checkout = () => {
               cart: cart,
               timestamp: `${date} at ${time} `,
               orderid: docRef.id,
+              shippingCharges: delivery === "Fast" ? "+ ₹ 40" : "- ₹ 10",
+              cartValue: cartvalue,
+              total:
+                delivery === "Fast"
+                  ? Number(cartvalue + (cartvalue / 100) * 18 + 40).toFixed(2)
+                  : Number(cartvalue + (cartvalue / 100) * 18 - 10).toFixed(2),
+              taxes: Number((cartvalue / 100) * 18).toFixed(2),
               rating: 0,
               review: "",
             },
