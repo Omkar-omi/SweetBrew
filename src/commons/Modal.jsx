@@ -9,6 +9,7 @@ const Modal = ({
   background = "#000000",
   children,
   onClose,
+  longModal,
 }) => {
   useEffect(() => {
     document.body.style.overflow = openModal ? "hidden" : "auto";
@@ -31,7 +32,11 @@ const Modal = ({
       className="flex justify-center items-center py-10 fixed transition-all duration-200 bg-black/10 backdrop-blur-sm h-screen w-screen left-0 bottom-0 right-0 z-50"
     >
       <div
-        className="relative flex transition-all duration-200 delay-100 pb-4 pt-5 w-[300px] sm:mx-0 sm:max-w-[350px] sm:w-full z-10"
+        className={`relative flex transition-all duration-200 delay-100 pb-4 pt-5 sm:mx-0 ${
+          longModal
+            ? " w-[450px] sm:max-w-[450px]"
+            : " w-[300px] sm:max-w-[350px]"
+        } sm:w-full z-10`}
         style={{
           background,
           boxShadow: "10px 10px 0px 0px rgba(220, 148, 76, 0.15)",

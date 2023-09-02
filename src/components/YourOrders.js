@@ -8,13 +8,13 @@ import {
   where,
 } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
-import { FaArrowLeft, FaStar } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import db from "../firebase";
-
-import { BsChevronRight } from "react-icons/bs";
+import { BsInfoCircle } from "react-icons/bs";
 import Star from "../commons/Star";
 import { UserContext } from "../context/AuthContext";
+import RatingModal from "./modals/RatingModal";
 
 const YourOrders = () => {
   const { user } = useContext(UserContext);
@@ -24,11 +24,15 @@ const YourOrders = () => {
   const [id, setId] = useState("");
   const [data, setData] = useState();
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [yourorders, setYourOrders] = useState();
+  const [selectedProduct, setSelectedProduct] = useState();
 
   useEffect(() => {
     if (user) getData();
   }, [user]);
 
+  console.log(yourorders);
   const handelReview = async () => {
     updateDoc(doc(db, "orders", id), {
       rating: rating,
@@ -48,6 +52,7 @@ const YourOrders = () => {
       { merge: true }
     );
     setRating(null);
+    setOpenModal(false);
     setReview("");
   };
 
@@ -63,6 +68,11 @@ const YourOrders = () => {
           id: doc.id,
         }))
       );
+    });
+
+    const userDocRef = doc(db, "users", user?.uid);
+    onSnapshot(userDocRef, (snapshot) => {
+      setYourOrders(snapshot && Object.values(snapshot?.data().yourorders));
     });
   };
 
@@ -97,124 +107,108 @@ const YourOrders = () => {
           </Link>
           <div className="ml-5 text-xl text-white">Order History</div>
         </nav>
-        <div className="flex items-center flex-col">
-          {data
-            ? Object.values(data[0].yourorders).map((product, index) => (
-                <div
-                  className="flex flex-col mb-5 w-72 md:w-[600px] border-solid border-2 p-3 rounded-lg"
-                  key={index}
-                >
-                  {data
-                    ? Object.values(product.cart).map((item, i) => (
-                        <div className="mx-4 flex flex-col grow" key={i}>
-                          <div className="flex items-center justify-between">
-                            <div className="text-warning md:text-xl">{`${item.quantity} x`}</div>
-                            <div className="font-medium text-white pb-2 md:text-xl my-2">
-                              {" "}
-                              {item.product}
-                            </div>
-                          </div>
-                          <hr />
-                          <div className="flex flex-row my-2 justify-between items-center">
-                            <div className="text-xs md:text-lg">
-                              {product.timestamp}
-                            </div>
-                            <div className="text-sm md:text-xl">{`₹ ${item.price}`}</div>
-                          </div>
-                          <hr />
-                        </div>
-                      ))
-                    : null}
-                  {(product.review === "" || product.rating === null) && (
-                    <div
-                      className="flex items-center justify-end mt-2 px-3 cursor-pointer w-max ml-auto"
-                      value={index}
-                      onMouseEnter={() => setId(product.orderid)}
-                      onTouchStart={() => setId(product.orderid)}
-                    >
-                      <label
-                        htmlFor="rating-modal"
-                        className="md:text-lg cursor-pointer"
-                        value={product.orderid}
-                      >
-                        Rate{" "}
-                      </label>
-                      <div>
-                        <BsChevronRight />
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex flex-row items-center justify-between p-3  ">
-                    <div className="ml-2 text-white text-sm md:text-lg">
-                      Review: {product?.review}
-                    </div>
-                    <div className="flex flex-row mr-2">
-                      <Star stars={product.rating} />
+        <div className="flex flex-col">
+          {data &&
+            Object.values(data[0].yourorders).map((product, index) => (
+              <div
+                className="flex flex-col mb-5 mx-4 sm:mx-[100px] md:mx-[150px] lg:mx-[300px] border border-white/50 p-3 rounded-lg"
+                key={index}
+              >
+                <div className="flex items-center justify-between gap-1 border-b border-dashed border-white/50 pb-2 mb-2">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-1">
+                    <div className="text-[14px]">Bill no:</div>
+                    <div className="flex text-primary/80 text-[14px]">
+                      {product.orderid}
                     </div>
                   </div>
+                  <div className="text-xs md:text-[14px]">
+                    {product.timestamp}
+                  </div>
                 </div>
-              ))
-            : null}
-        </div>
-        {/* modal for rating   */}
-        <input type="checkbox" id="rating-modal" className="modal-toggle" />
-        <div className="modal modal-middle">
-          <div className="modal-box">
-            <label
-              htmlFor="rating-modal"
-              className="btn btn-sm btn-circle absolute right-2 top-2"
-            >
-              ✕
-            </label>
-            <h3 className="font-bold text-lg">Rate your order:</h3>
-            <div className="flex flex-col ">
-              <div className="my-3">Write a Review:</div>
-              <textarea
-                placeholder="(Optional)"
-                className="p-2 rounded-lg text-black w-64 sm:w-[450px] h-24 resize-none"
-                type="email"
-                onChange={(e) => setReview(e.target.value)}
-              />
-            </div>
-            <div className="flex justify-between items-center my-3">
-              <label
-                htmlFor="rating-modal"
-                className="btn my-3 btn-primary"
-                // TODO: #1 Fix rating bug stars disappear
-                onClick={handelReview}
-              >
-                Save
-              </label>
-              <div className="flex">
-                {[...Array(5)].map((star, i) => {
-                  const ratingValue = i + 1;
-                  return (
-                    <label key={i}>
-                      <input
-                        type="radio"
-                        name="rating"
-                        className="hidden"
-                        value={ratingValue}
-                        onClick={() => setRating(ratingValue)}
-                      />
-                      <FaStar
-                        className="star cursor-pointer"
-                        size={50}
-                        color={
-                          ratingValue <= (hover || rating)
-                            ? "#ffc107"
-                            : "#e4e5e9"
-                        }
-                        onMouseEnter={() => setHover(ratingValue)}
-                        onMouseLeave={() => setHover(null)}
-                      />
-                    </label>
-                  );
-                })}
+                {data &&
+                  Object.values(product.cart).map((item, i) => (
+                    <div
+                      className="border-b border-white/30 mx-3 pb-2 mb-2 flex flex-col grow"
+                      key={i}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 font-medium text-white  md:text-xl">
+                          {item.product}
+                          <div className="text-warning md:text-xl">{`${item.quantity} x`}</div>
+                        </div>
+                        <div className="flex flex-row my-2 justify-between items-center">
+                          <div className="text-sm md:text-[14px]">{`₹ ${item.price}`}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                <div className="flex flex-col w-full px-3">
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="text-xs md:text-[14px]">Items total:</div>
+                    <div className="text-sm md:text-[14px]">{`₹ ${product.cartValue}`}</div>
+                  </div>
+                  <div className="flex gap-1 justify-between items-center">
+                    <div className="text-xs md:text-[14px] ">
+                      Delivery charge: (
+                      {product.shippingCharges === "+ ₹ 40" ? "Fast" : "Normal"}
+                      )
+                    </div>
+                    <div className="text-sm md:text-[14px]">
+                      {product.shippingCharges}
+                    </div>
+                  </div>
+                  <div className="flex gap-1 justify-between items-center">
+                    <div
+                      className="text-xs md:text-[14px] tooltip before:max-w-[150px]"
+                      data-tip={`CGST(9%): ₹ ${product.taxes / 2} SGST(9%): ₹ ${
+                        product.taxes / 2
+                      }`}
+                    >
+                      GST (18%):
+                      <BsInfoCircle className="inline ml-2" />
+                    </div>
+                    <div className="text-sm md:text-[14px]">{`+ ₹ ${product.taxes}`}</div>
+                  </div>
+                  <div className="flex gap-1 justify-between items-center border-t border-white/10 border-dashed pt-2 mt-2">
+                    <div className="text-xs md:text-[14px]">Total:</div>
+                    <div className="text-sm md:text-[14px]">{`₹ ${product.total}`}</div>
+                  </div>
+                </div>
+
+                <div
+                  value={index}
+                  onMouseEnter={() => setId(product.orderid)}
+                  onTouchStart={() => setId(product.orderid)}
+                  className="flex flex-row items-center justify-between p-3  "
+                >
+                  <div className="text-white text-sm md:text-lg">
+                    Review: {product?.review}
+                  </div>
+                  <div
+                    onClick={() => {
+                      if (product.review === "" || product.rating === 0) {
+                        setSelectedProduct(product);
+                        setOpenModal(true);
+                      }
+                    }}
+                    className="flex flex-row cursor-pointer"
+                  >
+                    <Star stars={product.rating} />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            ))}
         </div>
+        <RatingModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          review={review}
+          setReview={setReview}
+          setRating={setRating}
+          handelReview={handelReview}
+          rating={rating}
+          selectedProduct={selectedProduct}
+        />
       </>
     );
   }
