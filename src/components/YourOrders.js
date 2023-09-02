@@ -179,10 +179,13 @@ const YourOrders = () => {
                   value={index}
                   onMouseEnter={() => setId(product.orderid)}
                   onTouchStart={() => setId(product.orderid)}
-                  className="flex flex-row items-center justify-between p-3  "
+                  className="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 justify-between p-3  "
                 >
-                  <div className="text-white text-sm md:text-lg">
-                    Review: {product?.review}
+                  <div className="flex flex-col items-start text-white text-sm md:text-lg">
+                    <div>Review:</div>
+                    <div className="text-[14px] text-white/80 leading-[20px]">
+                      {product?.review}
+                    </div>
                   </div>
                   <div
                     onClick={() => {
