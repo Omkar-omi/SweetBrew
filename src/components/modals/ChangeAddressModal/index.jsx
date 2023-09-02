@@ -3,7 +3,7 @@ import { doc, setDoc } from "firebase/firestore";
 import db from "../../../firebase";
 import { FaHome } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../context/AuthContext";
 
 const ChangeAddressModal = ({
@@ -17,6 +17,14 @@ const ChangeAddressModal = ({
     area: address.area,
     landmark: address.landmark,
   });
+
+  useEffect(() => {
+    setNewAddress({
+      flatno: address.flatno,
+      area: address.area,
+      landmark: address.landmark,
+    });
+  }, [openModal]);
 
   const onClose = () => {
     setNewAddress({

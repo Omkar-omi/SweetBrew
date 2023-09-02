@@ -12,6 +12,7 @@ import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import db from "../firebase";
 import { UserContext } from "../context/AuthContext";
 import ChangeAddressModal from "../components/modals/ChangeAddressModal";
+import NameChangeModal from "./modals/NameChangeModal";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
@@ -25,13 +26,13 @@ const Profile = () => {
   });
 
   const [isPending, setIsPending] = useState(false);
-  const [editname, setEditName] = useState("");
   const [oldpass, setOldPass] = useState("");
   const [newpass, setNewPass] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const [openNameChangeModal, setOpenNameChangeModal] = useState(false);
 
   useEffect(() => {
     if (user) getData();
@@ -43,14 +44,6 @@ const Profile = () => {
       setEmail(doc.data().email);
       setAddress(doc.data().address);
     });
-  };
-
-  const handelEditName = () => {
-    const docRef = doc(db, "users", user?.uid);
-    updateDoc(docRef, {
-      name: editname,
-    });
-    setEditName("");
   };
 
   const handelSaveChanges = async (e) => {
@@ -122,9 +115,12 @@ const Profile = () => {
               readOnly={true}
               autoComplete="off"
             />
-            <label className="btn bg-neutral" htmlFor="name-modal">
+            <div
+              onClick={() => setOpenNameChangeModal(true)}
+              className="btn bg-neutral"
+            >
               <MdModeEdit className="w-5 h-5" />
-            </label>
+            </div>
           </div>
           <label className="text-white mb-2">Email :</label>
           <div className="flex gap-3 items-center">
@@ -191,33 +187,11 @@ const Profile = () => {
       </main>
 
       {/* Name modals */}
-      <input type="checkbox" id="name-modal" className="modal-toggle" />
-      <div className="modal modal-middle">
-        <div className="modal-box">
-          <label
-            htmlFor="name-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="font-bold text-lg">Edit Name</h3>
-          <label className="text-white mb-2">Name :</label>
-          <input
-            className="p-2 rounded-lg text-black w-64 sm:w-[450px] my-3"
-            type="text"
-            value={editname}
-            required
-            onChange={(e) => setEditName(e.target.value)}
-          />
-          <label
-            htmlFor="name-modal"
-            className="btn btn-primary"
-            onClick={handelEditName}
-          >
-            Save
-          </label>
-        </div>
-      </div>
+      <NameChangeModal
+        openModal={openNameChangeModal}
+        setOpenModal={setOpenNameChangeModal}
+        name={name}
+      />
       {address && (
         <ChangeAddressModal
           openModal={openModal}
