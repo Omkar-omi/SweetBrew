@@ -137,7 +137,7 @@ const ProductFilter = () => {
       ) : (
         <>
           {isLoading ? (
-            <div className="flex flex-wrap justify-center gap-2 md:mx-0  mx-[10px]  mt-[15px]">
+            <div className="flex flex-wrap mt-10 justify-center items-center">
               {[...Array(8)].map((_, index) => (
                 <SkeletonLoader key={index} />
               ))}
