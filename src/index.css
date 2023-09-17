@@ -86,3 +86,7 @@ input {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgb(231, 151, 72);
 }
+
+.cardtransition {
+  view-transition-name: card;
+}

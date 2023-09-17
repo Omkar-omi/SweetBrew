@@ -13,11 +13,17 @@ const ProductFilter = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getAllData();
+    setIsLoading(true);
+    if ("startViewTransition" in document) {
+      document.startViewTransition(() => {
+        getAllData();
+      });
+    } else {
+      getAllData();
+    }
   }, []);
 
   const getAllData = async () => {
-    setIsLoading(true);
     const alldata = [];
 
     const querySnapshotcoffee = await getDocs(collection(db, "coffee"));
@@ -38,7 +44,7 @@ const ProductFilter = () => {
     setAllProducts(alldata);
     setIsLoading(false);
   };
-  const getCoffeType = async (type) => {
+  const getFilterByName = (type) => {
     onSnapshot(collection(db, type), (snapshot) => {
       setAllProducts(
         snapshot.docs.map((doc) => ({
@@ -48,18 +54,27 @@ const ProductFilter = () => {
       );
     });
   };
+  // view transition api to filter by type
+  const getCoffeType = async (type) => {
+    if ("startViewTransition" in document) {
+      document.startViewTransition(() => {
+        getFilterByName(type);
+      });
+    } else {
+      getFilterByName(type);
+    }
+  };
 
-  const handleSearch = (e) => {
+  // view transition api for search
+  const serchTransitionAnimation = (value) => {
     let itemList = [];
     setSearching(true);
     allProducts?.map((item) => {
-      if (e.target.value === "") {
+      if (value === "") {
         setSearchData("");
         setSearching(false);
       } else if (
-        item.name
-          .toLocaleLowerCase()
-          .includes(e.target.value.toLocaleLowerCase())
+        item.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
       ) {
         itemList.push(item);
       }
@@ -67,6 +82,15 @@ const ProductFilter = () => {
     });
   };
 
+  const handleSearch = (e) => {
+    if ("startViewTransition" in document) {
+      document.startViewTransition(() => {
+        serchTransitionAnimation(e.target.value);
+      });
+    } else {
+      serchTransitionAnimation(e.target.value);
+    }
+  };
   return (
     <>
       <div className="flex flex-col lg:flex-row mx-3 mt-20 justify-between">
